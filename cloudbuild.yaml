@@ -47,3 +47,5 @@ options:
 
 substitutions:
   _BRANCH_NAME: "main"  # Default branch name; can be overridden during trigger configuration
+  _TARGET_BUCKET: ""    # Define via build trigger
+
