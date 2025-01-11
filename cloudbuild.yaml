@@ -31,19 +31,25 @@ steps:
     args:
       - -c
       - |
-        echo "Deploying DAGs to the Composer bucket for $BRANCH_NAME..."
-        if [ "$BRANCH_NAME" = "dev" ]; then
-          TARGET_BUCKET="gs://asia-southeast2-dev-env-4cd8345a-bucket/dags"
-        elif [ "$BRANCH_NAME" = "sit" ]; then
-          TARGET_BUCKET="gs://asia-southeast2-sit-env-f9237651-bucket/dags"
-        elif [ "$BRANCH_NAME" = "uat" ]; then
-          TARGET_BUCKET="gs://asia-southeast2-uat-env-bucket/dags"
-        elif [ "$BRANCH_NAME" = "production" ]; then
-          TARGET_BUCKET="gs://asia-southeast2-prod-env-bucket/dags"
-        else
-          echo "Error: Unsupported branch $BRANCH_NAME"
-          exit 1
-        fi
+        echo "Deploying DAGs to the Composer bucket for branch: $BRANCH_NAME"
+        case "$BRANCH_NAME" in
+          "dev")
+            TARGET_BUCKET="gs://asia-southeast2-dev-env-4cd8345a-bucket/dags"
+            ;;
+          "sit")
+            TARGET_BUCKET="gs://asia-southeast2-sit-env-f9237651-bucket/dags"
+            ;;
+          "uat")
+            TARGET_BUCKET="gs://asia-southeast2-uat-env-bucket/dags"
+            ;;
+          "production")
+            TARGET_BUCKET="gs://asia-southeast2-prod-env-bucket/dags"
+            ;;
+          *)
+            echo "Error: Unsupported branch $BRANCH_NAME"
+            exit 1
+            ;;
+        esac
         echo "Syncing DAGs to $TARGET_BUCKET..."
         gsutil -m rsync -r -d /workspace/dap-composer-cicd/dags $TARGET_BUCKET
 
@@ -51,4 +57,4 @@ options:
   logging: CLOUD_LOGGING_ONLY
 
 substitutions:
-  _BRANCH_NAME: "main"  # Use $BRANCH_NAME to detect the branch dynamically
+  _BRANCH_NAME: "main"

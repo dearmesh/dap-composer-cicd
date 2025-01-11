@@ -9,3 +9,4 @@
 #   The TARGET_BUCKET variable is assigned dynamically in the script, removing the need for any substitution.
 
 # 5 made changes to the trigger 
+# 6 gatau deh test lagi 
