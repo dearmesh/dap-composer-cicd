@@ -1,0 +1,82 @@
+CREATE EXTERNAL TABLE `dmu_workspace.unit_link_bi`(
+  `ecifref` decimal(16,0), 
+  `cod_cust` decimal(16,0), 
+  `bank_account_no` string, 
+  `acc` string, 
+  `policy_no` string, 
+  `bank_account_name` string, 
+  `cod_lob` decimal(4,0), 
+  `brn_code_acc` decimal(5,0), 
+  `brn_code_cif` decimal(5,0), 
+  `danamon_branch_code` string, 
+  `officer_code` string, 
+  `off_code_acc` string, 
+  `paid_to_date` string, 
+  `policy_status` string, 
+  `status_desc` string, 
+  `status_pol` string, 
+  `currency_code` string, 
+  `prod_date` string, 
+  `effect_date` string, 
+  `issue_date` string, 
+  `iss_date_yyyymm` string, 
+  `billing_date` string, 
+  `payment_mode` string, 
+  `policy_premium` decimal(22,4), 
+  `sum_assured` decimal(16,0), 
+  `payment_method` string, 
+  `maturity_date` string, 
+  `termination_date` string, 
+  `nip` string, 
+  `premium_duration` string, 
+  `benefit_duration` string, 
+  `basic_plan_com_code` string, 
+  `basic_plan_name` string, 
+  `a_name` string, 
+  `last_payment_date` string, 
+  `next_due_date` string, 
+  `cli_num` string, 
+  `beneficiary` string, 
+  `aaji_code` string, 
+  `o_name` string, 
+  `o_dob` string, 
+  `l_wa_cd_1_offcode` string, 
+  `servicing_agent_code` string, 
+  `servicing_agent_name` string, 
+  `writting_agent_code` string, 
+  `writting_agent_name` string, 
+  `o_gender` string, 
+  `o_idnumber` string, 
+  `o_relationship` string, 
+  `o_address1` string, 
+  `o_address2` string, 
+  `o_address3` string, 
+  `o_address4` string, 
+  `o_zip_code` string, 
+  `a_gender` string, 
+  `a_idnumber` string, 
+  `a_dob` string, 
+  `a_address1` string, 
+  `a_address2` string, 
+  `a_address3` string, 
+  `a_address4` string, 
+  `a_zip_code` string, 
+  `fs_code` string, 
+  `reference_spaj` string)
+PARTITIONED BY ( 
+  `date_pr` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='\;', 
+  'serialization.format'='\;') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://DNMUAT/user/hive/warehouse/dmu_workspace.db/unit_link_bi'
+TBLPROPERTIES (
+  'bucketing_version'='2', 
+  'discover.partitions'='true', 
+  'transient_lastDdlTime'='1731311073')

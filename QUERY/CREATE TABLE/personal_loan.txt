@@ -1,0 +1,61 @@
+CREATE EXTERNAL TABLE `bd_tableau_dev.personal_loan`(
+  `nomor_loan` string, 
+  `cif` decimal(10,0), 
+  `tgl_pencairan_pinjaman` date, 
+  `jumlah_pinjaman` decimal(18,4), 
+  `jumlah_pinjaman_yang_diterima` decimal(18,4), 
+  `jangka_waktu_pinjaman` decimal(5,0), 
+  `tgl_pembayaran_terakhir` date, 
+  `sisa_tenor` double, 
+  `pembayaran_ke` double, 
+  `rat_int_current` decimal(18,4), 
+  `jumlah_bunga_berjalan` decimal(18,4), 
+  `tgl_bunga_berjalan` date, 
+  `tgl_angsuran_setiap_bulan` string, 
+  `tgl_angsuran_pertama` date, 
+  `tgl_angsuran_terakhir` date, 
+  `jumlah_angsuran_per_bulan` decimal(18,4), 
+  `no_rek_pembayaran` string, 
+  `tipe_di` string, 
+  `cod_acct_stat` decimal(3,0), 
+  `cod_prod` decimal(5,0), 
+  `cod_lob` decimal(18,4), 
+  `os` decimal(18,4), 
+  `amt_principal_first` decimal(18,4), 
+  `amt_princ_bal_first` decimal(18,4), 
+  `off_code` string, 
+  `officer_name` string, 
+  `ops_code` string, 
+  `branch_code` decimal(5,0), 
+  `branch_name` string, 
+  `casid` string, 
+  `casa_product_code` decimal(5,0), 
+  `cod_acct_no` string, 
+  `cod_cc_brn` decimal(5,0), 
+  `casa_product_name` string, 
+  `casa_branch_code` decimal(5,0), 
+  `flg_psbook` string, 
+  `bal_book` decimal(24,4), 
+  `amt_hld` decimal(18,4), 
+  `bal_acct_min_reqd` decimal(18,4), 
+  `casa_status` decimal(3,0), 
+  `funding_report_flag` tinyint, 
+  `mis_code` string, 
+  `subtype1` string, 
+  `ecifref` string)
+PARTITIONED BY ( 
+  `date_pr` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://DNMUAT/warehouse/tablespace/external/hive/bd_tableau_dev.db/personal_loan'
+TBLPROPERTIES (
+  'bucketing_version'='2', 
+  'discover.partitions'='true', 
+  'last_modified_by'='usredlake', 
+  'last_modified_time'='1730444716', 
+  'transient_lastDdlTime'='1730444716')

@@ -1,0 +1,188 @@
+#GCS FOLDER CONFIGURATION
+source_gcs_folder:
+  bucket: NONE
+  folder: NONE
+process_gcs_folder:
+  bucket: NONE
+  folder: NONE
+backup_gcs_folder:
+  bucket: NONE
+  folder: NONE
+duplicate_gcs_folder:
+  bucket: NONE
+  folder: NONE
+error_gcs_folder:
+  bucket: NONE
+  folder: NONE
+archive_gcs_folder:
+  bucket: NONE
+  folder: NONE
+
+#FILE FORMAT CONFIGURATION
+file_format:
+  file_type: NONE
+  header: NONE
+  delimiter: NONE
+  file_pattern: NONE
+  count_delimiter: NONE
+  retention_file_day: NONE # 3 years
+  retention_table_day: NONE # 3 years
+
+
+#BIG QUERY CONFIGURATION
+temp_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: NONE
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    NONE
+
+main_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: dm_loan_tfs_module6   ## INI JANGAN DI PINDAHIN atau jadi NONE
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: | ## INI JANGAN DI PINDAHIN atau jadi NONE
+    CREATE OR REPLACE EXTERNAL TABLE v_dataset_id.dm_loan_tfs_module6
+    (
+      transaction_reff_number	string,
+      user_reff_number	string,
+      cif	string,
+      customer_name	string,
+      distributor	string,
+      anchor_or_supplier	string,
+      account_party	string,
+      advising_bank	string,
+      beneficiary_name	string,
+      beneficiary_id	string,
+      country_party_issuing_bank	string,
+      country_party_applicant_id	string,
+      beneficiary_country_code	string,
+      ao_code	string,
+      branch_name	string,
+      branch_code	string,
+      branch_related_to_beneficiary	string,
+      lob	string,
+      facility_id	string,
+      product_group	string,
+      product_description	string,
+      product_code	string,
+      on_off_bs	string,
+      cl_ncl	string,
+      category	string,
+      sight_usance	string,
+      wessel_type	string,
+      liability_no	string,
+      collectability	string,
+      transaction_date	string,
+      lc_bg_issue_date	string,
+      effective_date	string,
+      shipment_date	string,
+      expiry_date	string,
+      maturity_date_loan_acceptance	string,
+      closure_date	string,
+      latest_claim_date	string,
+      currency	string,
+      rate	string,
+      discount_value	string,
+      disbursement_value	string,
+      principal_outstanding	string,
+      principal_in_idr	string,
+      other_charges_rtgs_skn	string,
+      underlying_number	string,
+      lc_bg_related_transaction_reff	string,
+      gl_code	string,
+      remarks	string,
+      account_party_country_code	string,
+      advising_bank_country_code	string,
+      issuing_bank_country_code	string,
+      interest_os	string,
+      debit_account	string,
+      credit_account	string,
+      penalty_principal_os	string,
+      penalty_interest_os	string
+    )
+    WITH PARTITION COLUMNS 
+    (
+    date_pr string
+    )
+    WITH CONNECTION `v_connection`
+    OPTIONS 
+    (
+      uris = ['gs://v_bucket/*'],
+      format = 'PARQUET',
+      hive_partition_uri_prefix = 'gs://v_bucket/',
+      require_hive_partition_filter=false
+    );
+
+#QUERY CONFIGURATION
+sql_operations:
+  processing_location: NONE
+  sql_insert_temp_ext_to_temp: |
+      NONE
+  sql_check_dt_pr_exists : |
+      NONE
+  sql_insert: |
+    *
+  sql_delete: NONE
+  sql_prefix_query_table: |
+
+#SP BIGQUERY
+sp_operations:
+  sp_location: NONE
+  sp_dataset_id: NONE
+  sp_key_column: NONE
+  sp_validate_column: NONE
+  sp_validate_duplicate: NONE
+  sp_check_dependency: NONE
+  sp_validate_master_job: NONE
+  sp_datamart_name: NONE
+  sp_datamart_parameter: NONE
+  sp_check_data_retention : NONE
+  sp_data_cleansing_export : NONE
+  sp_delete_data_cleansing : NONE
+
+#STS JOB
+sts_operations:
+  sts_project_id: NONE
+  sts_job_name: NONE
+
+#AdditionalParameters
+additionalparam:
+  additionalparam1: NONE
+  additionalparam2: NONE
+  additionalparam3: NONE
+  additionalparam4: NONE
+  additionalparam5: NONE
+  additionalparam6: NONE
+  additionalparam7: NONE
+  additionalparam8: NONE
+  additionalparam9: NONE
+  additionalparam10: NONE

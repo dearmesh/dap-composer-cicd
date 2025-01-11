@@ -1,0 +1,33 @@
+CREATE EXTERNAL TABLE `bd_tableau_dev.dm_calendar`(
+  `date` string, 
+  `date_pr_format` string, 
+  `year` int, 
+  `quarter` bigint, 
+  `month` int, 
+  `month_short_name` string, 
+  `month_long_name` string, 
+  `week_of_month` string, 
+  `week_of_year` string, 
+  `day` int, 
+  `day_of_week` string, 
+  `first_date_week` string, 
+  `last_date_week` string, 
+  `day_long_name` string, 
+  `day_of_year` string, 
+  `weekend` int, 
+  `eom_flag` int, 
+  `first_date_flag` int, 
+  `holiday_flag` string, 
+  `holiday_name` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://DNMUAT/user/hive/warehouse/bd_tableau_dev.db/dm_calendar'
+TBLPROPERTIES (
+  'STATS_GENERATED_VIA_STATS_TASK'='true', 
+  'external.table.purge'='true', 
+  'transient_lastDdlTime'='1695701895')

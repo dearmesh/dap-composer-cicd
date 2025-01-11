@@ -1,0 +1,49 @@
+1	CREATE EXTERNAL TABLE `newmisplus2_dev.bd_ch_nobook`(
+2	  `dat_txn` timestamp, 
+3	  `cod_cc_brn_txn` decimal(5,0), 
+4	  `cod_userno` decimal(10,0), 
+5	  `ctr_batch_no` decimal(10,0), 
+6	  `ref_sys_tr_aud_no` decimal(10,0), 
+7	  `ref_sub_seq_no` decimal(10,0), 
+8	  `cod_acct_no` string, 
+9	  `txt_txn_desc` string, 
+10	  `dat_value` timestamp, 
+11	  `ref_chq_no` string, 
+12	  `cod_drcr` string, 
+13	  `cod_txn_mnemonic` decimal(5,0), 
+14	  `cod_txn_literal` string, 
+15	  `amt_txn` decimal(18,4), 
+16	  `flg_pasbkupd` string, 
+17	  `rat_ccy` decimal(18,4), 
+18	  `cod_msg_typ` decimal(5,0), 
+19	  `cod_proc` decimal(10,0), 
+20	  `ctr_updat_srlno` decimal(10,0), 
+21	  `dat_post` timestamp, 
+22	  `amt_txn_tcy` decimal(18,4), 
+23	  `cod_txn_ccy` decimal(5,0), 
+24	  `rat_conv_tclcy` decimal(18,4), 
+25	  `cod_sc` decimal(5,0), 
+26	  `cod_auth_id` string, 
+27	  `ref_card_no` string, 
+28	  `ref_txn_no` string, 
+29	  `ref_usr_no` string, 
+30	  `cod_entity_vpd` decimal(5,0))
+31	PARTITIONED BY ( 
+32	  `date_pr` string)
+33	ROW FORMAT SERDE 
+34	  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+35	STORED AS INPUTFORMAT 
+36	  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+37	OUTPUTFORMAT 
+38	  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+39	LOCATION
+40	  'hdfs://DNMUAT/warehouse/tablespace/external/hive/newmisplus2_dev.db/bd_ch_nobook'
+41	TBLPROPERTIES (
+42	  'STATS_GENERATED_VIA_STATS_TASK'='true', 
+43	  'bucketing_version'='2', 
+44	  'discover.partitions'='true', 
+45	  'impala.events.catalogServiceId'='7c464b5c2d064b73:bc2b938f09888c55', 
+46	  'impala.events.catalogVersion'='40640', 
+47	  'last_modified_by'='talend', 
+48	  'last_modified_time'='1683692068', 
+49	  'transient_lastDdlTime'='1719109883')

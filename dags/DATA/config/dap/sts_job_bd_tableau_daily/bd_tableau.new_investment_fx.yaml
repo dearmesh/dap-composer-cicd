@@ -1,0 +1,243 @@
+#GCS FOLDER CONFIGURATION
+source_gcs_folder:
+  bucket: NONE
+  folder: NONE
+process_gcs_folder:
+  bucket: NONE
+  folder: NONE
+backup_gcs_folder:
+  bucket: NONE
+  folder: NONE
+duplicate_gcs_folder:
+  bucket: NONE
+  folder: NONE
+error_gcs_folder:
+  bucket: NONE
+  folder: NONE
+archive_gcs_folder:
+  bucket: NONE
+  folder: NONE
+
+#FILE FORMAT CONFIGURATION
+file_format:
+  file_type: NONE
+  header: NONE
+  delimiter: NONE
+  file_pattern: NONE
+  count_delimiter: NONE
+  retention_file_day: NONE # 3 years
+  retention_table_day: NONE # 3 years
+
+
+#BIG QUERY CONFIGURATION
+temp_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: NONE
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    NONE
+
+main_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: new_investment_fx
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    CREATE OR REPLACE EXTERNAL TABLE v_dataset_id.new_investment_fx
+    (
+     trade_no string, 
+     branch_code string, 
+     cod_cc_brn_txn string, 
+     branch_name string, 
+     trader string, 
+     tradedate string, 
+     maturity_date string, 
+     pors_ncbs string, 
+     ccy_pair string, 
+     amount numeric, 
+     amount_usd numeric, 
+     amount_idr numeric, 
+     rate numeric, 
+     rate_usd numeric, 
+     basemarginidr numeric, 
+     interbankrate numeric, 
+     clientspread numeric, 
+     clientspread_final numeric, 
+     cif string, 
+     rc string, 
+     trx_ref_no string, 
+     ref_txn_no string, 
+     ref_usr_no string, 
+     officer_code_penjual string, 
+     officer_name_penjual string, 
+     branch_code_penjual string, 
+     branch_name_penjual string, 
+     posisi_officer_code_penjual string, 
+     region_penjual string, 
+     area_manager_code_penjual string, 
+     area_manager_name_penjual string, 
+     investment_specialist_code_penjual string, 
+     investment_specialist_name_penjual string, 
+     nip_penjual string, 
+     reg_class string, 
+     lob_acc string, 
+     account_number string, 
+     officer_code_acc string, 
+     officer_name_acc string, 
+     branch_code_acc string, 
+     branch_name_acc string, 
+     posisi_officer_code_acc string, 
+     region_acc string, 
+     area_manager_code_acc string, 
+     area_manager_name_acc string, 
+     investment_specialist_code_acc string, 
+     investment_specialist_name_acc string, 
+     nip_acc string, 
+     branch_code_original string, 
+     branch_name_original string, 
+     region_original string, 
+     am_code_original string, 
+     am_name_original string, 
+     cod_txn_status string, 
+     tradedate3 string, 
+     tradedate4 string, 
+     source string, 
+     amt_profit_loss numeric, 
+     amt_txn_from numeric, 
+     amt_txn_to numeric, 
+     amt_usd_equi numeric, 
+     ask_trader_cost_usd numeric, 
+     bal_effective numeric, 
+     bid_trader_cost_usd numeric, 
+     cod_acct_no_to string, 
+     cod_acct_title string, 
+     cod_cc_home_brn string, 
+     cod_ccy_from string, 
+     cod_ccy_other string, 
+     cod_ccy_priority string, 
+     cod_ccy_to string, 
+     cod_channel string, 
+     cod_cust_ic string, 
+     cod_sandi_tujuan string, 
+     cod_search_criteria string, 
+     cod_to_acct_title string, 
+     cod_user_approve string, 
+     cod_user_auth string, 
+     cod_user_input string, 
+     ctr_refresh_rate string, 
+     dat_post string, 
+     dat_txn string, 
+     date_pr_src string, 
+     flg_adj_exch_rat_chng string, 
+     flg_auto_settle string, 
+     flg_phone_fac string, 
+     flg_settle_scheme string, 
+     flg_src_from string, 
+     flg_trader_cost_chng string, 
+     load_timestamp string, 
+     nam_cust_full string, 
+     nam_cust_shrt string, 
+     rat_exchange_adj numeric, 
+     rat_from_ccy numeric, 
+     rat_to_ccy numeric, 
+     rat_trader_cost numeric, 
+     sandi_jenis_dokumen string, 
+     txt_search_string string, 
+     txt_trd_book string, 
+     txt_txn_desc string, 
+     txt_txn_mode string, 
+     txt_txn_type string, 
+     txt_user_typ string, 
+     usd_ask_sprd numeric, 
+     usd_bid_sprd numeric, 
+     uniq_rtl string, 
+     nam_ccy_from string, 
+     tier_ccy_from int, 
+     nam_ccy_to string, 
+     tier_ccy_to int, 
+     ori_ccy string
+    )
+    WITH PARTITION COLUMNS 
+    (
+    date_pr string
+    )
+    WITH CONNECTION `v_connection`
+    OPTIONS 
+    (
+      uris = ['gs://v_bucket/*'],
+      format = 'PARQUET',
+      hive_partition_uri_prefix = 'gs://v_bucket/',
+      require_hive_partition_filter=false
+    );
+
+#QUERY CONFIGURATION
+sql_operations:
+  processing_location: NONE
+  sql_insert_temp_ext_to_temp: |
+      NONE
+  sql_check_dt_pr_exists : |
+      NONE
+  sql_insert: |
+    *
+  sql_delete: NONE
+  sql_prefix_query_table: |
+
+#SP BIGQUERY
+sp_operations:
+  sp_location: NONE
+  sp_dataset_id: NONE
+  sp_key_column: NONE
+  sp_validate_column: NONE
+  sp_validate_duplicate: NONE
+  sp_check_dependency: NONE
+  sp_validate_master_job: NONE
+  sp_datamart_name: NONE
+  sp_datamart_parameter: NONE
+  sp_check_data_retention : NONE
+  sp_data_cleansing_export : NONE
+  sp_delete_data_cleansing : NONE
+
+#STS JOB
+sts_operations:
+  sts_project_id: NONE
+  sts_job_name: NONE
+
+#AdditionalParameters
+additionalparam:
+  additionalparam1: NONE
+  additionalparam2: NONE
+  additionalparam3: NONE
+  additionalparam4: NONE
+  additionalparam5: NONE
+  additionalparam6: NONE
+  additionalparam7: NONE
+  additionalparam8: NONE
+  additionalparam9: NONE
+  additionalparam10: NONE

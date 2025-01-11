@@ -1,0 +1,44 @@
+1	CREATE TABLE `bd_tableau_dev.dm_channel_trx_atm_new`(
+2	  `channel_type` string, 
+3	  `trx_date` string, 
+4	  `posting_date` string, 
+5	  `account_number` string, 
+6	  `prod_code` string, 
+7	  `prod_name` string, 
+8	  `lob_code` string, 
+9	  `lob_name` string, 
+10	  `card_number` string, 
+11	  `cif` string, 
+12	  `terminal_id` string, 
+13	  `trx_type` string, 
+14	  `dr_or_cr` string, 
+15	  `mcc` string, 
+16	  `result` string, 
+17	  `no_of_trx` bigint, 
+18	  `amount` decimal(22,2), 
+19	  `amount_fee` decimal(22,2), 
+20	  `user` string, 
+21	  `trx_description` string, 
+22	  `merch_type_channel` string, 
+23	  `cod_ao_business` string, 
+24	  `cod_cust_id` decimal(10,0), 
+25	  `dat_cust_open` timestamp, 
+26	  `cod_cc_homebrn` decimal(5,0), 
+27	  `cif_officer_id` string, 
+28	  `mitra_id` string, 
+29	  `mitra_name` string)
+30	PARTITIONED BY ( 
+31	  `date_pr` string)
+32	ROW FORMAT SERDE 
+33	  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+34	STORED AS INPUTFORMAT 
+35	  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+36	OUTPUTFORMAT 
+37	  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+38	LOCATION
+39	  'hdfs://DNMUAT/warehouse/tablespace/managed/hive/bd_tableau_dev.db/dm_channel_trx_atm_new'
+40	TBLPROPERTIES (
+41	  'bucketing_version'='2', 
+42	  'transactional'='true', 
+43	  'transactional_properties'='insert_only', 
+44	  'transient_lastDdlTime'='1646707776')

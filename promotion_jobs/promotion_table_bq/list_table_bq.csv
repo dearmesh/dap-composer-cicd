@@ -1,0 +1,2 @@
+schema; table_name; is_partition; is_cluster;cluster_by
+dm_stg_dap;sum_installment_cc_cust_movement;Y;Y;cif_funding,trx_type_level_2

@@ -1,0 +1,55 @@
+CREATE EXTERNAL TABLE `bd_tableau_dev.qris_merchant`(
+  `merchant_id` string, 
+  `merchant_name` string, 
+  `national_merchant_id` string, 
+  `tanggal_aktif` string, 
+  `status` bigint, 
+  `status_name` string, 
+  `branch_code` string, 
+  `region_code` string, 
+  `nip_officer` string, 
+  `mpan` string, 
+  `groupname_mechant` string, 
+  `merchant_city` string, 
+  `mcc` string, 
+  `badanhukum` string, 
+  `merchant_postal_code` string, 
+  `account_no_merchant` decimal(22,0), 
+  `cif_merchant` decimal(22,0), 
+  `cif_str_merchant` string, 
+  `badanusaha` string, 
+  `merchant_province` string, 
+  `account_name` string, 
+  `merchant_criteria` string, 
+  `merchant_address` string, 
+  `npwp` string, 
+  `kelurahan_pic` string, 
+  `kecamatan_pic` string, 
+  `email_pic` string, 
+  `pic_postal_code` string, 
+  `pic_city` string, 
+  `pic_nik` string, 
+  `pic_name` string, 
+  `pic_province` string, 
+  `pic_address` string, 
+  `pic_phone` string, 
+  `ecifref` string)
+PARTITIONED BY ( 
+  `date_pr` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://DNMUAT/warehouse/tablespace/external/hive/bd_tableau_dev.db/qris_merchant'
+TBLPROPERTIES (
+  'DO_NOT_UPDATE_STATS'='true', 
+  'bucketing_version'='2', 
+  'discover.partitions'='true', 
+  'impala.events.catalogServiceId'='cef0c4c1dd9143d1:b43ab4ba9e559e3e', 
+  'impala.events.catalogVersion'='99396', 
+  'last_modified_by'='usredlake', 
+  'last_modified_time'='1714974846', 
+  'transient_lastDdlTime'='1714974846')

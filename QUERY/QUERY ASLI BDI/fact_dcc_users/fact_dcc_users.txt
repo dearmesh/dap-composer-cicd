@@ -1,0 +1,28 @@
+with acct_corp_dcc as (
+select a.corp_id, c.cod_cust, a.acct_no, b.acct_nm, c.cod_acct_title, a.is_inq, a.is_debit, a.is_crdt, a.debit_lmt, a.inactive_sts,  c.cod_acct_stat, b.created_dt,
+ROW_NUMBER() OVER (PARTITION BY a.corp_id, c.cod_cust ORDER BY a.debit_lmt DESC, c.cod_acct_stat Desc, b.created_dt) AS orde
+from newmisplus2.bd_dcc_pcc_corp_acct a
+inner join newmisplus2.bd_dcc_acct_acct b on a.acct_no=b.acct_no and a.date_pr=b.date_pr and b.date_pr="20240930"
+inner join newmisplus2.bd_mis_ch_acct_mast c on trim(b.acct_no)=trim(c.cod_acct_no) and c.date_pr="20240930"
+where a.date_pr='20240930' and a.corp_id not in ('PCM1','PCM2','PCM3','PCM0000000','PCM0033124') 
+),
+dcc_idm_login_history as (
+select b.corp_id, max(login_dt) as last_login_dt 
+from newmisplus2.bd_dcc_idm_login_history a
+left join newmisplus2.bd_dcc_pcc_corp_usr b on trim(a.user_id)=trim(b.spi_usr_cd) 
+where a.date_pr='20240930' group by 1
+)
+ 
+select 
+a.id as corp_id, a.host_cif_id, a.nm as corp_name,
+b.cod_cust, b.acct_no, b.acct_nm, b.cod_acct_title, b.is_inq, b.is_debit, b.is_crdt, b.debit_lmt, b.inactive_sts,  b.cod_acct_stat, 
+a.tax_id_no, a.addr_1, a.addr_2, a.addr_3, a.postcode_cd, a.ctry_cd, a.email_1, a.email_2, a.phone_no, a.fax_no, a.is_inactive, a.inactive_reason, a.is_delete, a.cam_setup, 
+a.max_usr_count, a.is_assign_to_mech, a.is_edit_repair, a.created_by, a.created_dt, a.updated_by, a.updated_dt,
+a.ids_sgm_cd, a.bus_unit_cd, a.pckg_cd, c.nm as package, a.hndling_offcer_cd, a.new_cct_handler_method, a.business_size_cd, a.corp_adm_option, a.is_allow_edit_file_upload, d.last_login_dt
+from newmisplus2.bd_dcc_pcc_corp a
+left join (select * from acct_corp_dcc where orde=1) b on a.id=b.corp_id 
+left join newmisplus2.bd_dcc_sp_package c on a.pckg_cd=c.cd and c.date_pr="20240930"
+left join dcc_idm_login_history d on a.id=d.corp_id
+where a.date_pr='20240930' and a.is_delete ='N' 
+and a.id not in ('PCM1','PCM2','PCM3','PCM0000000','PCM0033124') 
+order by a.id, a.host_cif_id, b.cod_cust

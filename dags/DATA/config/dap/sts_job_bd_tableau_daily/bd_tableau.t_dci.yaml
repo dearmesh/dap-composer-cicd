@@ -1,0 +1,204 @@
+#GCS FOLDER CONFIGURATION
+source_gcs_folder:
+  bucket: NONE
+  folder: NONE
+process_gcs_folder:
+  bucket: NONE
+  folder: NONE
+backup_gcs_folder:
+  bucket: NONE
+  folder: NONE
+duplicate_gcs_folder:
+  bucket: NONE
+  folder: NONE
+error_gcs_folder:
+  bucket: NONE
+  folder: NONE
+archive_gcs_folder:
+  bucket: NONE
+  folder: NONE
+
+#FILE FORMAT CONFIGURATION
+file_format:
+  file_type: NONE
+  header: NONE
+  delimiter: NONE
+  file_pattern: NONE
+  count_delimiter: NONE
+  retention_file_day: NONE # 3 years
+  retention_table_day: NONE # 3 years
+
+
+#BIG QUERY CONFIGURATION
+temp_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: NONE
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    NONE
+
+main_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: t_dci
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    CREATE OR REPLACE EXTERNAL TABLE v_dataset_id.t_dci
+    (
+    id_no numeric, 
+    customer_cif string, 
+    customer_name string, 
+    branch_code string, 
+    currency_pair string, 
+    base_ccy string, 
+    alt_ccy string, 
+    trade_date timestamp, 
+    effective_date timestamp, 
+    strike_date timestamp, 
+    maturity_date timestamp, 
+    tenure_days numeric, 
+    nominal_penempatan numeric, 
+    spot_rate numeric, 
+    buffer_value_pips numeric, 
+    strike_rate numeric, 
+    ftp_interbank_rate numeric, 
+    deposits_base_currency numeric, 
+    dcr_interest_rate numeric, 
+    day_counts numeric, 
+    tax_rate numeric, 
+    pay_if_not_ccy string, 
+    pay_if_not_amount numeric, 
+    pay_if_ccy string, 
+    pay_if_amount numeric, 
+    acct_relasi_base_currency string, 
+    acct_relasi_alt_currency string, 
+    dealing_nip string, 
+    dealing_dci_sertifikasi_ string, 
+    dealing_sales_code string, 
+    dealing_sales_name string, 
+    referantor_nip string, 
+    referantor_sales_code string, 
+    referantor_marketing_name string, 
+    is_name string, 
+    deal_no_summit string, 
+    premi_ccy string, 
+    premium_received1 numeric, 
+    base_currency1 numeric, 
+    premium_received2 numeric, 
+    base_currency2 numeric, 
+    profit_in_base_currency numeric, 
+    type_source_fund string, 
+    source_of_fund string, 
+    bsm_internal_ftp_deal numeric, 
+    result string, 
+    ccy string, 
+    amount_to_be_credit_ numeric, 
+    trade_id_if_exercised numeric, 
+    rate_ccy numeric, 
+    rate_usd numeric, 
+    amount_in_idr numeric, 
+    revenue_in_idr numeric, 
+    amount_in_usd numeric, 
+    revenue_in_usd numeric, 
+    sales_code string, 
+    oc_code_acct string, 
+    perc_sales numeric, 
+    perc_ref numeric, 
+    sales_is_code string, 
+    acct_is_code string, 
+    sales_bm_code string, 
+    acct_bm_code string, 
+    sales_am_code string, 
+    acct_am_code string, 
+    sales_branch_code bigint, 
+    acct_branch_code bigint, 
+    exists_trd_id numeric, 
+    sales_code_position string, 
+    oc_code_acct_position string, 
+    nti_flag string, 
+    nti_prod string
+    )
+    WITH PARTITION COLUMNS 
+    (
+    date_pr string
+    )
+    WITH CONNECTION `v_connection`
+    OPTIONS 
+    (
+      uris = ['gs://v_bucket/*'],
+      format = 'PARQUET',
+      hive_partition_uri_prefix = 'gs://v_bucket/',
+      require_hive_partition_filter=false
+    );
+
+#QUERY CONFIGURATION
+sql_operations:
+  processing_location: NONE
+  sql_insert_temp_ext_to_temp: |
+      NONE
+  sql_check_dt_pr_exists : |
+      NONE
+  sql_insert: |
+    *
+  sql_delete: NONE
+  sql_prefix_query_table: |
+
+#SP BIGQUERY
+sp_operations:
+  sp_location: NONE
+  sp_dataset_id: NONE
+  sp_key_column: NONE
+  sp_validate_column: NONE
+  sp_validate_duplicate: NONE
+  sp_check_dependency: NONE
+  sp_validate_master_job: NONE
+  sp_datamart_name: NONE
+  sp_datamart_parameter: NONE
+  sp_check_data_retention : NONE
+  sp_data_cleansing_export : NONE
+  sp_delete_data_cleansing : NONE
+
+#STS JOB
+sts_operations:
+  sts_project_id: NONE
+  sts_job_name: NONE
+
+#AdditionalParameters
+additionalparam:
+  additionalparam1: NONE
+  additionalparam2: NONE
+  additionalparam3: NONE
+  additionalparam4: NONE
+  additionalparam5: NONE
+  additionalparam6: NONE
+  additionalparam7: NONE
+  additionalparam8: NONE
+  additionalparam9: NONE
+  additionalparam10: NONE

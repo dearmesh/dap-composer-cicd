@@ -1,0 +1,228 @@
+username password AD
+sts_dev / D@n@m0n68
+
+
+create keytab
+ktutil
+add_entry -password -p sts_dev@CORPUAT.DANAMON.CO.ID -k 1 -e rc4-hmac
+add_entry -password -p sts_dev@CORPUAT.DANAMON.CO.ID -k 2 -e aes256-cts-hmac-sha1-96
+wkt sts_dev.keytab
+
+
+install agent 
+gcloud transfer agents install --pool=agent-cloudera-dap \
+  --count=1 \
+  --mount-directories="/etc/krb5.conf,/root/keytab/,/root/key/" \
+  --hdfs-namenode-uri="http://clo-uat-edl201.corpuat.danamon.co.id:9870" \
+  --creds-file="/root/key/sa-key.json" \
+  --kerberos-config-file="/etc/krb5.conf" \
+  --kerberos-keytab-file="/root/keytab/sts_dev.keytab" \
+  --kerberos-user-principal="sts_dev@CORPUAT.DANAMON.CO.ID" \
+  --kerberos-service-principal="HTTP/clo-uat-edl201.corpuat.danamon.co.id@CORPUAT.DANAMON.CO.ID"
+
+gcloud transfer agents install --pool=agent-cloudera-dap \
+  --count=1 \
+  --mount-directories="/etc/krb5.conf,/etc/keytab/,/root/key/" \
+  --hdfs-namenode-uri="http://clo-uat-edl201.corpuat.danamon.co.id:9870" \
+  --creds-file="/root/key/sa-key.json" \
+  --kerberos-config-file="/etc/krb5.conf" \
+  --kerberos-keytab-file="/etc/keytab/sts_dev.keytab" \
+  --kerberos-user-principal="sts_dev@CORPUAT.DANAMON.CO.ID" \
+  --kerberos-service-principal="hdfs/clo-uat-edl201.corpuat.danamon.co.id"
+
+gcloud transfer agents install --pool=agent-cloudera-dap \
+  --count=1 \
+  --mount-directories="/etc/krb5.conf,/etc/keytab/,/root/key/" \
+  --hdfs-namenode-uri="http://clo-uat-edl201.corpuat.danamon.co.id:9870" \
+  --creds-file="/root/key/sa-key.json" \
+  --hdfs-data-transfer-protection="privacy" \
+  --hdfs-username="sts_dev" \
+  --kerberos-config-file="/etc/krb5.conf" \
+  --kerberos-keytab-file="/etc/keytab/sts_dev.keytab" \
+  --kerberos-user-principal="sts_dev@CORPUAT.DANAMON.CO.ID" \
+  --kerberos-service-principal="HTTP/clo-uat-edl201.corpuat.danamon.co.id@CORPUAT.DANAMON.CO.ID"
+
+  gcloud transfer agents install --pool=agent-cloudera-dap \
+  --count=1 \
+  --mount-directories="/etc/krb5.conf,/etc/keytab/,/root/key/" \
+  --hdfs-namenode-uri="http://clo-uat-edl201.corpuat.danamon.co.id:9870" \
+  --creds-file="/root/key/sa-key.json" \
+  --hdfs-username="sts_dev" \
+  --kerberos-config-file="/etc/krb5.conf" \
+  --kerberos-keytab-file="/etc/keytab/sts_dev.keytab" \
+  --kerberos-user-principal="sts_dev@CORPUAT.DANAMON.CO.ID" \
+  --kerberos-disable-pa-px-fast=true \
+  --kerberos-service-principal="HTTP/_HOST@CORPUAT.DANAMON.CO.ID"
+
+  gcloud transfer agents install --pool=agent-cloudera-dap \
+  --count=1 \
+  --mount-directories="/etc/krb5.conf,/etc/keytab/,/root/key/" \
+  --hdfs-namenode-uri="rpc://clo-uat-edl201.corpuat.danamon.co.id:8020" \
+  --creds-file="/root/key/sa-key.json" \
+  --kerberos-config-file="/etc/krb5.conf" \
+  --kerberos-keytab-file="/etc/keytab/sts_dev.keytab" \
+  --kerberos-user-principal="sts_dev@CORPUAT.DANAMON.CO.ID" \
+  --kerberos-service-principal="hdfs/clo-uat-edl201.corpuat.danamon.co.id@CORPUAT.DANAMON.CO.ID"
+
+  gcloud transfer agents install --pool=agent-cloudera-dap \
+  --count=1 \
+  --mount-directories="/etc/krb5.conf,/etc/keytab/,/home/key/" \
+  --hdfs-namenode-uri="rpc://clo-uat-edl201.corpuat.danamon.co.id:8020" \
+  --creds-file="/root/key/sa-key.json" \
+  --kerberos-config-file="/etc/krb5.conf" \
+  --kerberos-keytab-file="/etc/keytab/sts_dev.keytab" \
+  --kerberos-user-principal="sts_dev@CORPUAT.DANAMON.CO.ID" \
+  --kerberos-service-principal="hdfs/clo-uat-edl201.corpuat.danamon.co.id@CORPUAT.DANAMON.CO.ID"
+
+gcloud transfer agents install --pool=agent-cloudera-dap \
+  --count=1 \
+  --mount-directories="/etc/krb5.conf,/etc/keytab/,/root/key/" \
+  --hdfs-namenode-uri="rpc://clo-uat-edl201.corpuat.danamon.co.id:8022" \
+  --creds-file="/root/key/sa-key.json" \
+  --kerberos-config-file="/etc/krb5.conf" \
+  --kerberos-keytab-file="/etc/keytab/sts_dev.keytab" \
+  --kerberos-user-principal="sts_dev@CORPUAT.DANAMON.CO.ID" \
+  --kerberos-service-principal="hdfs/clo-uat-edl201.corpuat.danamon.co.id" 
+
+docker exec -u 0 -it d3f260839072 bash
+  
+sudo docker run -d --ulimit memlock=64000000 --rm \
+  --network=host \
+  -v /:/transfer_root \
+  gcr.io/cloud-ingest/tsop-agent:latest \
+  --enable-mount-directory \
+  --project-id=prj-37255c396cdac09b \
+  --hostname=$(hostname) \
+  --creds-file="/root/key/sa-key.json" \
+  --agent-pool=agent-cloudera-dap \
+  --hdfs-namenode-uri=http://clo-uat-edl201.corpuat.danamon.co.id:9870 \
+  --kerberos-config-file=/etc/krb5.conf \
+  --kerberos-user-principal=sts_dev@CORPUAT.DANAMON.CO.ID \
+  --kerberos-keytab-file=/root/keytab/sts_dev.keytab
+
+sudo docker run -d --ulimit memlock=64000000 --rm \
+  --network=host \
+  -v /:/transfer_root \
+  gcr.io/cloud-ingest/tsop-agent:latest \
+  --enable-mount-directory \
+  --project-id=prj-37255c396cdac09b \
+  --hostname=$(hostname) \
+  --creds-file="/root/key/sa-key.json" \
+  --agent-pool=agent-cloudera-dap \
+  --hdfs-namenode-uri=http://clo-uat-edl201.corpuat.danamon.co.id:9870  \
+
+gcloud transfer agents install --pool=agent-cloudera-dap \
+  --count=1 \
+  --mount-directories="/etc/krb5.conf,/root/keytab/,/root/key/" \
+  --hdfs-namenode-uri="http://clo-uat-edl201.corpuat.danamon.co.id:9870" \
+  --creds-file="/root/key/sa-key.json" \
+  --hdfs-username="sts_dev" 
+
+gcloud transfer agents install --pool=agent-cloudera-dap \
+  --count=1 \
+  --mount-directories="/etc/krb5.conf,/root/keytab/,/root/key/" \
+  --hdfs-namenode-uri="http://clo-uat-edl201.corpuat.danamon.co.id:9870" \
+  --creds-file="/root/key/sa-key.json" \
+  --hdfs-username='sts_dev"&delegation="JwAHc3RzX2RldgdzdHNfZGV2AIoBk08cYa2KAZNzKOWtjT_mX44L0RSPmsgsbWrX18ezWz2gN0SXFio9MRJXRUJIREZTIGRlbGVnYXRpb24RMTAuMTk3LjE5LjIxOjgwMjA'
+
+gcloud transfer agents install --pool=agent-cloudera-dap \
+  --count=1 \
+  --mount-directories="/etc/krb5.conf,/root/keytab/,/root/key/" \
+  --hdfs-namenode-uri="http://10.197.19.100:9870" \
+  --creds-file="/root/key/sa-key.json" \
+  --hdfs-username="sts_dev&#61;"
+
+gcloud transfer agents install --pool=agent-cloudera-dap \
+  --count=1 \
+  --mount-directories="/etc/krb5.conf,/root/keytab/,/root/key/" \
+  --hdfs-namenode-uri="http://clo-uat-edl201.corpuat.danamon.co.id:9870" \
+  --creds-file="/root/key/sa-key.json" \
+  --kerberos-config-file="/etc/krb5.conf" \
+  --kerberos-keytab-file="/root/keytab/sts_dev.keytab" \
+  --kerberos-user-principal="sts_dev@CORPUAT.DANAMON.CO.ID" \
+  --kerberos-service-principal="HTTP/clo-uat-edl201.corpuat.danamon.co.id@CORPUAT.DANAMON.CO.ID"
+
+gcloud transfer agents install --pool=agent-cloudera-dap \
+  --count=1 \
+  --mount-directories="/etc/krb5.conf,/root/keytab/,/root/key/" \
+  --hdfs-namenode-uri="rpc://clo-uat-edl201.corpuat.danamon.co.id:8020" \
+  --creds-file="/root/key/sa-key.json" \
+  --kerberos-config-file="/etc/krb5.conf" \
+  --kerberos-keytab-file="/root/keytab/sts_dev.keytab" \
+  --kerberos-user-principal="sts_dev@CORPUAT.DANAMON.CO.ID" \
+  --kerberos-service-principal="hdfs/clo-uat-edl201.corpuat.danamon.co.id@CORPUAT.DANAMON.CO.ID"
+
+
+  --kerberos-disable-pa-px-fast=true 
+apk upgrade
+apk add krb5
+
+/root/binary/new-binary/binary
+./agent   --agent-pool=agent-cloudera-dap   --creds-file=/root/key/sa-key.json   --hdfs-namenode-uri=http://clo-uat-edl201.corpuat.danamon.co.id:9870   --hostname=dev-landing-data-dap-sts-vm   --kerberos-config-file=/etc/krb5.conf   --kerberos-user-principal=sts_dev@CORPUAT.DANAMON.CO.ID   --kerberos-keytab-file=/etc/kerberos/sts_dev.keytab   --project-id=prj-37255c396cdac09b  --kerberos-disable-pa-fx-fast=true --log-dir=/tmp
+nohup ./agent   --agent-pool=agent-cloudera-dap   --creds-file=/root/key/sa-key.json   --hdfs-namenode-uri=http://clo-uat-edl201.corpuat.danamon.co.id:9870   --hostname=dev-landing-data-dap-sts-vm   --kerberos-config-file=/etc/krb5.conf   --kerberos-user-principal=sts_dev@CORPUAT.DANAMON.CO.ID   --kerberos-keytab-file=/etc/kerberos/sts_dev.keytab   --project-id=prj-37255c396cdac09b  --kerberos-disable-pa-fx-fast=true --log-dir=/tmp &
+
+curl -i --negotiate -u : "http://clo-uat-edl201.corpuat.danamon.co.id:9870/webhdfs/v1/user/sts_dev/sample.txt?op=LISTSTATUS"
+
+curl -i --negotiate -u : "http://clo-uat-edl201.corpuat.danamon.co.id:9870/webhdfs/v1/user/sts_dev/sample.txt?op=OPEN"
+
+curl -i --negotiate -u : "http://clo-uat-edl201.corpuat.danamon.co.id:9870/webhdfs/v1/user/sts_dev?op=GETFILECHECKSUM"
+
+curl -i --negotiate -u : "http://clo-uat-edl201.corpuat.danamon.co.id:1006/webhdfs/v1/user/sts_dev?op=GETFILECHECKSUM"
+
+curl -i --negotiate -u -H "Accept: application/json" : "http://clo-uat-edl201.corpuat.danamon.co.id:9870/webhdfs/v1/warehouse/tablespace/external/hive/newmisplus2_dev.db/bd_ch_nobook/date_pr=20190731/000000_0?op=GETFILECHECKSUM"
+
+curl -i --negotiate -u : "http://172.169.41.10:9870/webhdfs/v1/user/sts_dev?op=LISTSTATUS"
+
+curl -L "http://clo-uat-edl201.corpuat.danamon.co.id:9870/webhdfs/v1/user/sts_dev/sample.txt?op=GETFILECHECKSUM&delegation=$deleg"
+
+$ hadoop fs -Ddfs.checksum.combine.mode=COMPOSITE_CRC -checksum hdfs:///user/bob/data.bin
+hdfs:///user/bob/data.bin	COMPOSITE-CRC32C	c517d290
+
+curl  : "http://clo-uat-edl201.corpuat.danamon.co.id:9870/webhdfs/v1/user/sts_dev?op=LISTSTATUS"
+
+curl -i : "http://clo-uat-edl201.corpuat.danamon.co.id:9870/webhdfs/v1/user/sts_dev?op=LISTSTATUS&user.name=sts_dev%26delegation=JwAHc3RzX2RldgdzdHNfZGV2AIoBk08cYa2KAZNzKOWtjT_mX44L0RSPmsgsbWrX18ezWz2gN0SXFio9MRJXRUJIREZTIGRlbGVnYXRpb24RMTAuMTk3LjE5LjIxOjgwMjA"
+
+curl -i : "http://clo-uat-edl201.corpuat.danamon.co.id:9870/webhdfs/v1/user/sts_dev?delegation=JwAHc3RzX2RldgdzdHNfZGV2AIoBk08cYa2KAZNzKOWtjT_mX44L0RSPmsgsbWrX18ezWz2gN0SXFio9MRJXRUJIREZTIGRlbGVnYXRpb24RMTAuMTk3LjE5LjIxOjgwMjA?op=LISTSTATUS"
+
+curl -i : "http://10.197.19.21:9870/webhdfs/v1/user/sts_dev?op=LISTSTATUS&user.name=sts_dev%22%26delegation%3D%22JwAHc3RzX2RldgdzdHNfZGV2AIoBk08cYa2KAZNzKOWtjT_mX44L0RSPmsgsbWrX18ezWz2gN0SXFio9MRJXRUJIREZTIGRlbGVnYXRpb24RMTAuMTk3LjE5LjIxOjgwMjA"
+
+export deleg=JwAHc3RzX2RldgdzdHNfZGV2AIoBk2ggu5CKAZOMLT-QjUEnrI4L1RRfUdKzjt4GkTN3L8sy9XQgUu-3qxJXRUJIREZTIGRlbGVnYXRpb24RMTAuMTk3LjE5LjIxOjgwMjA
+
+sts_dev"&delegation="JwAHc3RzX2RldgdzdHNfZGV2AIoBk08cYa2KAZNzKOWtjT_mX44L0RSPmsgsbWrX18ezWz2gN0SXFio9MRJXRUJIREZTIGRlbGVnYXRpb24RMTAuMTk3LjE5LjIxOjgwMjA
+
+curl -i --negotiate -u : "http://clo-uat-edl201.corpuat.danamon.co.id:9870/webhdfs/v1/?op=GETDELEGATIONTOKEN&renewer=sts_dev"
+
+W1121 15:32:52.073442      76 helpers.go:541] got unknown FailureType: UNKNOWN_FAILURE, Get "http://10.197.19.100:9870/webhdfs/v1/user/sts_dev?op=LISTSTATUS&user.name=sts_dev%22%26delegation%3D%22JwAHc3RzX2RldgdzdHNfZGV2AIoBk08cYa2KAZNzKOWtjT_mX44L0RSPmsgsbWrX18ezWz2gN0SXFio9MRJXRUJIREZTIGRlbGVnYXRpb24RMTAuMTk3LjE5LjIxOjgwMjA": dial tcp 10.197.19.100:9870: connect: connection timed out
+
+create transfer job
+gcloud transfer jobs create \
+  hdfs://user/sts_dev/ gs://dap-landing-bucket/
+  --source-agent-pool=agent-cloudera-dap
+
+./hdfs_auth_check --hdfs-namenode-uri rpc://clo-uat-edl201.corpuat.danamon.co.id:8020 --kerberos-config-file=/etc/krb5.conf --kerberos-user-principal sts_dev@CORPUAT.DANAMON.CO.ID --kerberos-keytab-file /root/keytab/sts_dev.keytab --kerberos-disable-pa-fx-fast=true --kerberos-service-principal=hdfs/clo-uat-edl201.corpuat.danamon.co.id@CORPUAT.DANAMON.CO.ID /user/sts_dev/
+
+./hdfs_auth_check --hdfs-namenode-uri http://clo-uat-edl201.corpuat.danamon.co.id:9870 --kerberos-config-file=/etc/krb5.conf --kerberos-user-principal sts_dev@CORPUAT.DANAMON.CO.ID --kerberos-keytab-file /root/keytab/sts_dev.keytab --kerberos-disable-pa-fx-fast=true --kerberos-service-principal=http/clo-uat-edl201.corpuat.danamon.co.id@CORPUAT.DANAMON.CO.ID /user/sts_dev/sample.txt
+
+curl -L "http://<http://clo-uat-edl201.corpuat.danamon.co.id:9870/webhdfs/v1/user/sts_dev/sample.txt?op=OPEN" | md5sum
+
+
+default_realm = CORPUAT.DANAMON.CO.ID
+dns_lookup_kdc = false
+dns_lookup_realm = false
+ticket_lifetime = 604800
+renew_lifetime = 604800
+forwardable = true
+udp_preference_limit = 1
+kdc_timeout = 3000
+disable_fast_negotiation = true
+
+default_tkt_enctypes = aes256-cts-hmac-sha1-96
+default_tgs_enctypes = aes256-cts-hmac-sha1-96
+default_permitted_enctypes = aes256-cts-hmac-sha1-96
+
+
+[realms]
+CORPUAT.DANAMON.CO.ID = {
+    kdc = bdi-uat-ad.corpuat.danamon.co.id
+    admin_server = bdi-uat-ad.corpuat.danamon.co.id
+}

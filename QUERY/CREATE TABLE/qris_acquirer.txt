@@ -1,0 +1,56 @@
+CREATE EXTERNAL TABLE `bd_tableau_dev.qris_acquirer`(
+  `destination_trx_type` string, 
+  `cpan` string, 
+  `mpan` string, 
+  `origin` string, 
+  `issuer_app` string, 
+  `status` bigint, 
+  `status_name` string, 
+  `trx_type` string, 
+  `amount` decimal(38,4), 
+  `unix_trx_date` bigint, 
+  `trx_date` string, 
+  `settlement_date` string, 
+  `retrieval_ref_no` string, 
+  `issuer_id` string, 
+  `issuer_name` string, 
+  `acquiring_institution_id` string, 
+  `acquirer_name` string, 
+  `request_time` string, 
+  `mcc` string, 
+  `merchant_name` string, 
+  `merchant_city` string, 
+  `merchant_country_code` string, 
+  `merchant_criteria` string, 
+  `kodepos_merchant` string, 
+  `groupname_mechant` string, 
+  `account_no_merchant` decimal(22,0), 
+  `cif_merchant` decimal(22,0), 
+  `cif_str_merchant` string, 
+  `username_` string, 
+  `jenis_kelamin` string, 
+  `dob_year` string, 
+  `province_nasabah` string, 
+  `kodepos_nasabah` string, 
+  `pekerjaan_nasabah` string, 
+  `kecamatan_nasabah` string, 
+  `kabupaten_nasabah` string, 
+  `account_no_nasabah` string, 
+  `cif_nasabah` decimal(22,0), 
+  `cif_str_nasabah` string)
+PARTITIONED BY ( 
+  `date_pr` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://DNMUAT/warehouse/tablespace/external/hive/bd_tableau_dev.db/qris_acquirer'
+TBLPROPERTIES (
+  'bucketing_version'='2', 
+  'discover.partitions'='true', 
+  'last_modified_by'='usredlake', 
+  'last_modified_time'='1714975026', 
+  'transient_lastDdlTime'='1714975026')

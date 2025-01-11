@@ -1,0 +1,232 @@
+#GCS FOLDER CONFIGURATION
+source_gcs_folder:
+  bucket: NONE
+  folder: NONE
+process_gcs_folder:
+  bucket: NONE
+  folder: NONE
+backup_gcs_folder:
+  bucket: NONE
+  folder: NONE
+duplicate_gcs_folder:
+  bucket: NONE
+  folder: NONE
+error_gcs_folder:
+  bucket: NONE
+  folder: NONE
+archive_gcs_folder:
+  bucket: NONE
+  folder: NONE
+
+#FILE FORMAT CONFIGURATION
+file_format:
+  file_type: NONE
+  header: NONE
+  delimiter: NONE
+  file_pattern: NONE
+  count_delimiter: NONE
+  retention_file_day: NONE # 3 years
+  retention_table_day: NONE # 3 years
+
+
+#BIG QUERY CONFIGURATION
+temp_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: NONE
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    NONE
+
+main_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: bd_pm_rel_txn_store
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    CREATE OR REPLACE EXTERNAL TABLE v_dataset_id.bd_pm_rel_txn_store
+    (
+    ref_txn_no string, 
+    cod_org_brn numeric, 
+    cod_org_bank numeric, 
+    cod_payment_txn string, 
+    cod_pkg_id string, 
+    cod_txn_mnemonic numeric, 
+    cod_txn_init_brn numeric, 
+    org_rec_cod_acct_no string, 
+    cod_acct_title string, 
+    cod_frm_acct_iban string, 
+    dat_transmission numeric, 
+    cod_org_remit string, 
+    cod_org_process numeric, 
+    txt_narrative string, 
+    org_ref_network_no string, 
+    cod_clg numeric, 
+    type_clg numeric, 
+    flg_internal_clg string, 
+    cod_frm_zone_id string, 
+    cod_frm_circle_id string, 
+    cod_to_zone_id string, 
+    cod_to_circle_id string, 
+    ref_msg_no string, 
+    cod_ctparty_acct string, 
+    nam_ctparty string, 
+    nam_ctparty_bank string, 
+    nam_ctparty_branch string, 
+    cod_ctparty_iban string, 
+    cod_ctparty_routing string, 
+    txt_ctparty_add1 string, 
+    txt_ctparty_add2 string, 
+    txt_ctparty_add3 string, 
+    nam_ctparty_city string, 
+    nam_ctparty_state string, 
+    nam_ctparty_country string, 
+    txt_ctparty_zip string, 
+    nam_remitter string, 
+    phone_remitter string, 
+    remitter_natl_id string, 
+    cod_instr_no string, 
+    typ_instr numeric, 
+    dat_instr timestamp, 
+    cod_error string, 
+    cod_ovr string, 
+    txt_error string, 
+    cod_telegram string, 
+    cod_reason string, 
+    nam_corresp_agent string, 
+    nam_corresp_agent_bank string, 
+    nam_corresp_agent_brn string, 
+    cod_trn string, 
+    cod_stl_ccy string, 
+    cod_txn_initiator_resi_stat string, 
+    cod_fee_coll string, 
+    cod_bi string, 
+    nam_cust_shrt string, 
+    cod_sw_fcc_product string, 
+    cod_sw_category_remitter string, 
+    cod_sw_bic_receiver string, 
+    cod_sw_category_receiver string, 
+    cod_sw_affiliation string, 
+    cod_sw_purpose string, 
+    cod_ctparty_country string, 
+    cod_cust_country string, 
+    txt_sw_sender_to_receiver_1 string, 
+    txt_sw_sender_to_receiver_2 string, 
+    txt_sw_sender_to_receiver_3 string, 
+    txt_sw_sender_to_receiver_4 string, 
+    txt_sw_sender_to_receiver_5 string, 
+    txt_sw_sender_to_receiver_6 string, 
+    txt_custadr_add1 string, 
+    txt_custadr_add2 string, 
+    txt_custadr_add3 string, 
+    txt_corresp_agent_add1 string, 
+    txt_corresp_agent_add2 string, 
+    txt_corresp_agent_add3 string, 
+    nam_cust_bank string, 
+    txt_cust_bank_add1 string, 
+    txt_cust_bank_add2 string, 
+    txt_cust_bank_add3 string, 
+    txt_cust_bank_add4 string, 
+    txt_ctparty_bank_add1 string, 
+    txt_ctparty_bank_add2 string, 
+    txt_ctparty_bank_add3 string, 
+    txt_ctparty_bank_add4 string, 
+    txt_sw_cust_to_receiver_1 string, 
+    txt_sw_cust_to_receiver_2 string, 
+    txt_sw_cust_to_receiver_3 string, 
+    txt_sw_cust_to_receiver_4 string, 
+    ref_sw_swift_no string, 
+    cod_nostro_acct string, 
+    cod_sw_bic_sender string, 
+    cod_vostro_acct string, 
+    nam_cust_brn string, 
+    cod_cust_rtgs string, 
+    cod_ctparty_rtgs string, 
+    cod_related_trn string, 
+    ref_bor_no string, 
+    ref_subseq_no numeric, 
+    cod_entity_vpd numeric
+    )
+    WITH PARTITION COLUMNS 
+    (
+    date_pr string
+    )
+    WITH CONNECTION `v_connection`
+    OPTIONS 
+    (
+      uris = ['gs://v_bucket/*'],
+      format = 'PARQUET',
+      hive_partition_uri_prefix = 'gs://v_bucket/',
+      require_hive_partition_filter=false
+    );
+
+#QUERY CONFIGURATION
+sql_operations:
+  processing_location: NONE
+  sql_insert_temp_ext_to_temp: |
+      NONE
+  sql_check_dt_pr_exists : |
+      NONE
+  sql_insert: |
+    *
+  sql_delete: NONE
+  sql_prefix_query_table: |
+
+#SP BIGQUERY
+sp_operations:
+  sp_location: NONE
+  sp_dataset_id: NONE
+  sp_key_column: NONE
+  sp_validate_column: NONE
+  sp_validate_duplicate: NONE
+  sp_check_dependency: NONE
+  sp_validate_master_job: NONE
+  sp_datamart_name: NONE
+  sp_datamart_parameter: NONE
+  sp_check_data_retention : NONE
+  sp_data_cleansing_export : NONE
+  sp_delete_data_cleansing : NONE
+
+#STS JOB
+sts_operations:
+  sts_project_id: NONE
+  sts_job_name: NONE
+
+#AdditionalParameters
+additionalparam:
+  additionalparam1: NONE
+  additionalparam2: NONE
+  additionalparam3: NONE
+  additionalparam4: NONE
+  additionalparam5: NONE
+  additionalparam6: NONE
+  additionalparam7: NONE
+  additionalparam8: NONE
+  additionalparam9: NONE
+  additionalparam10: NONE

@@ -1,0 +1,49 @@
+CREATE EXTERNAL TABLE `bd_tableau_dev.dm_channel_trx_dcc_new`(
+  `corp_id` string, 
+  `posting_ref_no` string, 
+  `sys_ref_no` string, 
+  `mnu_cd` string, 
+  `mnu_nm` string, 
+  `prodsrvc_nm` string, 
+  `op_acct_ccy_cd` string, 
+  `op_acct_no` string, 
+  `cif` decimal(13,0), 
+  `lob_code` decimal(10,0), 
+  `lob_name` string, 
+  `dat_cust_open` timestamp, 
+  `acct_open_dt` timestamp, 
+  `acct_branch_code` decimal(10,0), 
+  `acct_branch_name` string, 
+  `account_snd` string, 
+  `cif_snd` string, 
+  `trx_ccy_cd` string, 
+  `debit_trx_eq_amt` decimal(22,7), 
+  `crdt_acct_ccy_cd` string, 
+  `revrate` decimal(22,2), 
+  `debit_idr_amt` decimal(22,4), 
+  `crdt_eq_amt` decimal(22,4), 
+  `crdt_acct_no` string, 
+  `crdt_acct_nm` string, 
+  `cp_bnk_cd` string, 
+  `cp_bnk_nm` string, 
+  `is_err_nm` string, 
+  `trx_sts_nm` string, 
+  `actn_dt` timestamp, 
+  `log_dt` timestamp, 
+  `log_date` string, 
+  `log_crp_fin_actv_id` string, 
+  `no_of_trx` decimal(2,0))
+PARTITIONED BY ( 
+  `date_pr` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://DNMUAT/warehouse/tablespace/external/hive/bd_tableau_dev.db/dm_channel_trx_dcc_new'
+TBLPROPERTIES (
+  'bucketing_version'='2', 
+  'discover.partitions'='true', 
+  'transient_lastDdlTime'='1729071141')

@@ -1,0 +1,28 @@
+1	CREATE EXTERNAL TABLE `newmisplus2_dev.bd_mis_ci_business_types`(
+2	  `cod_business_cat` decimal(6,0), 
+3	  `txt_business` string, 
+4	  `flg_mnt_status` string, 
+5	  `cod_mnt_action` string, 
+6	  `cod_last_mnt_makerid` string, 
+7	  `cod_last_mnt_chkrid` string, 
+8	  `dat_last_mnt` timestamp, 
+9	  `ctr_updat_srlno` decimal(10,0), 
+10	  `ref_udf_no` string, 
+11	  `cod_entity_vpd` decimal(5,0))
+12	PARTITIONED BY ( 
+13	  `date_pr` string)
+14	ROW FORMAT SERDE 
+15	  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+16	STORED AS INPUTFORMAT 
+17	  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+18	OUTPUTFORMAT 
+19	  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+20	LOCATION
+21	  'hdfs://DNMUAT/warehouse/tablespace/external/hive/newmisplus2_dev.db/bd_mis_ci_business_types'
+22	TBLPROPERTIES (
+23	  'STATS_GENERATED_VIA_STATS_TASK'='true', 
+24	  'bucketing_version'='2', 
+25	  'discover.partitions'='true', 
+26	  'last_modified_by'='talend', 
+27	  'last_modified_time'='1653565183', 
+28	  'transient_lastDdlTime'='1719146078')

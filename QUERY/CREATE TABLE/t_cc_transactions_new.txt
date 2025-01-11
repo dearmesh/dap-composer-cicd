@@ -1,0 +1,77 @@
+CREATE EXTERNAL TABLE `bd_tableau_dev.t_cc_transactions_new`(
+  `dbsc` string, 
+  `smttacct` string, 
+  `smttcrdnbr` string, 
+  `smtttxndte` decimal(8,0), 
+  `smtttxncde` decimal(4,0), 
+  `smttxnamt` decimal(11,2), 
+  `smttpstdte` decimal(8,0), 
+  `smttautcde` string, 
+  `smttdesc` string, 
+  `smttrefnbr` string, 
+  `smttmccde` decimal(4,0), 
+  `smttpdt` decimal(3,0), 
+  `smttocurcd` string, 
+  `smttocuram` decimal(12,2), 
+  `smttstlcde` string, 
+  `smttstlamt` decimal(13,2), 
+  `smttfilbuf` string, 
+  `smttmtind` string, 
+  `smttbnknbr` decimal(4,0), 
+  `smttmchnbr` decimal(11,0), 
+  `cdtype` string, 
+  `ctry1` string, 
+  `smttrefnbr2` string, 
+  `ctry2` int, 
+  `ncard_id` string, 
+  `mech_nbr` string, 
+  `txcddsc` string, 
+  `txcdcrflg` string, 
+  `flag_bca` string, 
+  `cntry` string, 
+  `periode` string, 
+  `base` string, 
+  `trxdesc` string, 
+  `merchx` string, 
+  `acctcrlmtp` decimal(22,2), 
+  `acctcust` string, 
+  `merch_type` string, 
+  `typ` string, 
+  `principal` string, 
+  `trx_type` string, 
+  `location_` string, 
+  `online_source_merchant` int, 
+  `online_source_field` int, 
+  `online_source_keyin` int, 
+  `mcc_cat` string, 
+  `trxdesc2` string, 
+  `trxdesc3` string, 
+  `trxdesc4` string, 
+  `merch` string, 
+  `merch_grp` string, 
+  `fl_svol` string, 
+  `trxdesc_svol` string, 
+  `merchant_cat_by_mcc_lvl2` string, 
+  `merchant_cat_by_mcc_lvl1` string, 
+  `ecifref` string, 
+  `city_district_type` string, 
+  `city_district_name` string, 
+  `province` string, 
+  `country` string, 
+  `partner_group` string)
+PARTITIONED BY ( 
+  `date_pr` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://DNMUAT/warehouse/tablespace/external/hive/bd_tableau_dev.db/t_cc_transactions_new'
+TBLPROPERTIES (
+  'bucketing_version'='2', 
+  'discover.partitions'='true', 
+  'last_modified_by'='usredlake', 
+  'last_modified_time'='1717501148', 
+  'transient_lastDdlTime'='1717501148')

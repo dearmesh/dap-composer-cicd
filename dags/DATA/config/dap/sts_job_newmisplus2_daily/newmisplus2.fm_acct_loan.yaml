@@ -1,0 +1,218 @@
+#GCS FOLDER CONFIGURATION
+source_gcs_folder:
+  bucket: NONE
+  folder: NONE
+process_gcs_folder:
+  bucket: NONE
+  folder: NONE
+backup_gcs_folder:
+  bucket: NONE
+  folder: NONE
+duplicate_gcs_folder:
+  bucket: NONE
+  folder: NONE
+error_gcs_folder:
+  bucket: NONE
+  folder: NONE
+archive_gcs_folder:
+  bucket: NONE
+  folder: NONE
+
+#FILE FORMAT CONFIGURATION
+file_format:
+  file_type: NONE
+  header: NONE
+  delimiter: NONE
+  file_pattern: NONE
+  count_delimiter: NONE
+  retention_file_day: NONE # 3 years
+  retention_table_day: NONE # 3 years
+
+
+#BIG QUERY CONFIGURATION
+temp_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: NONE
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    NONE
+
+main_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: fm_acct_loan
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    CREATE OR REPLACE EXTERNAL TABLE v_dataset_id.fm_acct_loan
+    (
+      load_timestamp	timestamp,
+      as_of_date	timestamp,
+      account_number	string,
+      cif_key	string,
+      iso_currency_cd	string,
+      product_cd	string,
+      product_typ	string,
+      gl_account_id	numeric,
+      bdi_gl_account_id_int_inc_exp	numeric,
+      lob_code	numeric,
+      project_sales_mgr	string,
+      ao_business	string,
+      ao_operation	string,
+      branch_cd	numeric,
+      account_open_date	timestamp,
+      value_date	timestamp,
+      cur_net_rate	numeric,
+      rat_variance	numeric,
+      index_rate	numeric,
+      net_interest	numeric,
+      account_status	string,
+      cross_sell	string,
+      value_chain	string,
+      balance_ori	numeric,
+      balance_idr	numeric,
+      maturity_date	timestamp,
+      industry_code	numeric,
+      industry_name	string,
+      new_to_bank	string,
+      region	numeric,
+      account_close_date	timestamp,
+      program	string,
+      new_to_product	string,
+      obligor	string,
+      dat_disb	timestamp,
+      amt_disbursed	numeric,
+      early_pay_date	timestamp,
+      issue_date	timestamp,
+      loan_purpose_typ	string,
+      restructure	string,
+      day_past_due	numeric,
+      collectibility	numeric,
+      limit_fasilitas	numeric,
+      limit_plafond_curr	numeric,
+      limit_plafond_prev	numeric,
+      int_inc_adjustment	numeric,
+      int_inc_recovery	numeric,
+      last_payment_date	timestamp,
+      next_payment_date	timestamp,
+      account_flag	string,
+      wair	numeric,
+      source_data	string,
+      account_funding	string,
+      coll_acct_td	string,
+      amt_arrears_due	numeric,
+      cust_name	string,
+      contract_ref_no	string,
+      credit_line_id	string,
+      line_start_date	timestamp,
+      line_status	string,
+      limit_plafon_ori	numeric,
+      limit_plafon_idr	numeric,
+      product_code_ncbs	string,
+      product_desc	string,
+      branch_description	string,
+      branch_regional	numeric,
+      business_seg_cat	numeric,
+      business_seg_typ	string,
+      nam_acct_officer	string,
+      cod_class_prod	string,
+      ppap_hapus_pokok	numeric,
+      date_last_disb	timestamp,
+      type_disb	string,
+      avg_mis	numeric,
+      avg_daily_bal	numeric,
+      amt_instal_outst	numeric,
+      amt_principal	numeric,
+      amt_interest	numeric,
+      amt_arrears_interest	numeric,
+      amt_penalty	numeric,
+      amt_arrears_princ	numeric,
+      term	numeric,
+      mis_prod_code	string,
+      mis_prod_desc	string,
+      line_start_date_facility	timestamp,
+      line_expire_date_facility	timestamp
+    )
+    WITH PARTITION COLUMNS 
+    (
+    date_pr string
+    )
+    WITH CONNECTION `v_connection`
+    OPTIONS 
+    (
+      uris = ['gs://v_bucket/*'],
+      format = 'PARQUET',
+      hive_partition_uri_prefix = 'gs://v_bucket/',
+      require_hive_partition_filter=false
+    );
+
+#QUERY CONFIGURATION
+sql_operations:
+  processing_location: NONE
+  sql_insert_temp_ext_to_temp: |
+      NONE
+  sql_check_dt_pr_exists : |
+      NONE
+  sql_insert: |
+    *
+  sql_delete: NONE
+  sql_prefix_query_table: |
+
+#SP BIGQUERY
+sp_operations:
+  sp_location: NONE
+  sp_dataset_id: NONE
+  sp_key_column: NONE
+  sp_validate_column: NONE
+  sp_validate_duplicate: NONE
+  sp_check_dependency: NONE
+  sp_validate_master_job: NONE
+  sp_datamart_name: NONE
+  sp_datamart_parameter: NONE
+  sp_check_data_retention : NONE
+  sp_data_cleansing_export : NONE
+  sp_delete_data_cleansing : NONE
+
+#STS JOB
+sts_operations:
+  sts_project_id: NONE
+  sts_job_name: NONE
+
+#AdditionalParameters
+additionalparam:
+  additionalparam1: NONE
+  additionalparam2: NONE
+  additionalparam3: NONE
+  additionalparam4: NONE
+  additionalparam5: NONE
+  additionalparam6: NONE
+  additionalparam7: NONE
+  additionalparam8: NONE
+  additionalparam9: NONE
+  additionalparam10: NONE
