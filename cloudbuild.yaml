@@ -33,9 +33,9 @@ steps:
       - |
         echo "Deploying DAGs to the Composer bucket for $BRANCH_NAME..."
         if [ "$BRANCH_NAME" = "dev" ]; then
-          TARGET_BUCKET="gs://gs://asia-southeast2-dev-env-4cd8345a-bucket/dags"
+          TARGET_BUCKET="gs://asia-southeast2-dev-env-4cd8345a-bucket/dags"
         elif [ "$BRANCH_NAME" = "sit" ]; then
-          TARGET_BUCKET="gs://gs://asia-southeast2-sit-env-f9237651-bucket/dags"
+          TARGET_BUCKET="gs://asia-southeast2-sit-env-f9237651-bucket/dags"
         else
           echo "Error: Unsupported branch $BRANCH_NAME"
           exit 1
