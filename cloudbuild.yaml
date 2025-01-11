@@ -7,7 +7,7 @@ steps:
       - -c
       - |
         echo "Cloning repository..."
-        git clone https://github.com/dearmesh/dap-composer-cicd/.git /workspace/dap-composer-cicd
+        git clone https://github.com/dearmesh/dap-composer-cicd.git /workspace/dap-composer-cicd
         cd /workspace/dap-composer-cicd
         git checkout $BRANCH_NAME
 
@@ -32,20 +32,22 @@ steps:
       - -c
       - |
         echo "Deploying DAGs to the Composer bucket for $BRANCH_NAME..."
-        if [ "$BRANCH_NAME" = "dev" ]; then
-          TARGET_BUCKET="gs://asia-southeast2-dev-env-4cd8345a-bucket/dags"
-        elif [ "$BRANCH_NAME" = "sit" ]; then
-          TARGET_BUCKET="gs://asia-southeast2-sit-env-f9237651-bucket/dags"
-        else
-          echo "Error: Unsupported branch $BRANCH_NAME"
-          exit 1
-        fi
+        case "$BRANCH_NAME" in
+          "dev")
+            TARGET_BUCKET="gs://asia-southeast2-dev-env-4cd8345a-bucket/dags"
+            ;;
+          "sit")
+            TARGET_BUCKET="gs://asia-southeast2-sit-env-f9237651-bucket/dags"
+            ;;
+          *)
+            echo "Error: Unsupported branch $BRANCH_NAME"
+            exit 1
+            ;;
+        esac
         gsutil -m rsync -r -d /workspace/dap-composer-cicd/dags $TARGET_BUCKET
 
 options:
   logging: CLOUD_LOGGING_ONLY
 
 substitutions:
-  _BRANCH_NAME: "main"  # Default branch name; can be overridden during trigger configuration
-  _TARGET_BUCKET: ""    # Define via build trigger
-
+  _BRANCH_NAME: "main"  # Default branch name; overridden during trigger configuration
