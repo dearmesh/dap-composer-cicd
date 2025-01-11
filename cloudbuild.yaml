@@ -1,0 +1,49 @@
+steps:
+  # Step 1: Clone the repository
+  - id: "Clone"
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        echo "Cloning repository..."
+        git clone https://github.com/dearmesh/dap-composer-cicd/.git /workspace/dap-composer-cicd
+        cd /workspace/dap-composer-cicd
+        git checkout $BRANCH_NAME
+
+  # Step 2: Check for changes in the dags/ folder
+  - id: "Detect-Changes"
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        echo "Checking for changes in the dags/ folder..."
+        if ! git diff --name-only HEAD~1 HEAD | grep '^dags/'; then
+          echo "No changes in DAG files. Exiting."
+          exit 0
+        fi
+
+  # Step 3: Sync DAGs to the appropriate Composer bucket
+  - id: "Upload"
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        echo "Deploying DAGs to the Composer bucket for $BRANCH_NAME..."
+        if [ "$BRANCH_NAME" = "dev" ]; then
+          TARGET_BUCKET="gs://gs://asia-southeast2-dev-env-4cd8345a-bucket/dags"
+        elif [ "$BRANCH_NAME" = "sit" ]; then
+          TARGET_BUCKET="gs://gs://asia-southeast2-sit-env-f9237651-bucket/dags"
+        else
+          echo "Error: Unsupported branch $BRANCH_NAME"
+          exit 1
+        fi
+        gsutil -m rsync -r -d /workspace/dap-composer-cicd/dags $TARGET_BUCKET
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+substitutions:
+  _BRANCH_NAME: "main"  # Default branch name; can be overridden during trigger configuration
