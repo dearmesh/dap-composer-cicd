@@ -11,3 +11,4 @@
 # 5 made changes to the trigger 
 # 6 gatau deh test lagi 
 # 7 test gemini 
+# 8 test gemini 2 

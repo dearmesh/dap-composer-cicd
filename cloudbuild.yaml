@@ -51,7 +51,7 @@ steps:
             ;;
         esac
         echo "Syncing DAGs to $TARGET_BUCKET..."
-        gsutil -m rsync -r -d /workspace/dap-composer-cicd/dags $TARGET_BUCKET
+        gsutil -m rsync -r -d /workspace/dap-composer-cicd/dags "$TARGET_BUCKET" 
 
 options:
   logging: CLOUD_LOGGING_ONLY
