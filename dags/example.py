@@ -7,3 +7,5 @@
 #   The bucket selection logic is now fully handled in the script using if conditions based on $BRANCH_NAME.
 #   Dynamic Bucket Resolution:
 #   The TARGET_BUCKET variable is assigned dynamically in the script, removing the need for any substitution.
+
+# 5 made changes to the trigger 
