@@ -1,12 +1,12 @@
 steps:
-  # Step 1: Clone the repository
+  # Step 1: Clone the repository from GitHub
   - id: "Clone"
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: bash
     args:
       - -c
       - |
-        echo "Cloning repository..."
+        echo "Cloning repository from GitHub..."
         git clone https://github.com/dearmesh/dap-composer-cicd.git /workspace/dap-composer-cicd
         cd /workspace/dap-composer-cicd
         git checkout $BRANCH_NAME
@@ -44,10 +44,11 @@ steps:
             exit 1
             ;;
         esac
+        echo "Syncing DAGs to $TARGET_BUCKET"
         gsutil -m rsync -r -d /workspace/dap-composer-cicd/dags $TARGET_BUCKET
 
 options:
   logging: CLOUD_LOGGING_ONLY
 
 substitutions:
-  _BRANCH_NAME: "main"  # Default branch name; overridden during trigger configuration
+  _BRANCH_NAME: "main"  # Ensure this is overridden in the trigger
