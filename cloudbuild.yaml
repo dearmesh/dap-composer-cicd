@@ -25,7 +25,7 @@ steps:
         fi
 
   # Step 3: Sync DAGs to the appropriate Composer bucket
-    - id: "Upload"
+  - id: "Upload"
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: bash
     args:
