@@ -6,7 +6,7 @@ from airflow.models import Variable
 from airflow.operators.empty import EmptyOperator
 # from airflow.operators.oracle_operator import OracleOperator
 # from airflow.hooks.oracle_hook import OracleHook
-from airflow.providers.oracle.hooks.oracle import OracleHook
+# from airflow.providers.oracle.hooks.oracle import OracleHook
 from airflow.providers.google.cloud.hooks.gcs import GCSHook
 from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
 from airflow.providers.google.cloud.transfers.oracle_to_gcs import OracleToGCSOperator
