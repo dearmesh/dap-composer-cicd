@@ -63,6 +63,17 @@ steps:
         gsutil -m rsync -r -d /workspace/dap-composer-cicd/dags "$TARGET_BUCKET" 
 
 
+steps:
+  - id: "Debug"
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        echo "Environment variables:"
+        env
+
+
 substitutions:
   _BRANCH_NAME: "main"
 
