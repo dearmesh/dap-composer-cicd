@@ -8,17 +8,17 @@ steps:
         echo "Branch name: $_BRANCH_NAME"
 
 steps:
-  # Step 1: Clone the repository from GitHub
   - id: "Clone"
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: bash
     args:
       - -c
       - |
-        echo "Cloning repository from GitHub..."
-        git clone https://github.com/dearmesh/dap-composer-cicd /dap-composer-cicd
-        cd /dap-composer-cicd
-        git checkout $_BRANCH_NAME 
+        echo "Cloning repository..."
+        git clone https://github.com/dearmesh/dap-composer-cicd.git /workspace/dap-composer-cicd
+        cd /workspace/dap-composer-cicd
+        git checkout $BRANCH_NAME
+
 
 substitutions:
   _BRANCH_NAME: "main"
