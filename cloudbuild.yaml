@@ -1,0 +1,11 @@
+steps:
+  - id: "Test"
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        echo "Branch name: $_BRANCH_NAME"
+
+substitutions:
+  _BRANCH_NAME: "main"
