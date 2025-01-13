@@ -16,8 +16,8 @@ steps:
       - -c
       - |
         echo "Cloning repository from GitHub..."
-        git clone https://github.com/dearmesh/dap-composer-cicd.git /workspace/dap-composer-cicd
-        cd /workspace/dap-composer-cicd
+        git clone https://github.com/dearmesh/dap-composer-cicd.git /dap-composer-cicd
+        cd /dap-composer-cicd
         git checkout $_BRANCH_NAME 
 
 substitutions:
