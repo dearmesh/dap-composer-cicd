@@ -9,3 +9,6 @@ steps:
 
 substitutions:
   _BRANCH_NAME: "main"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
