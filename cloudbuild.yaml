@@ -45,7 +45,7 @@ steps:
           gsutil -m rsync -r -d /workspace/dap-composer-cicd/dags gs://asia-southeast2-dev-env-4cd8345a-bucket/dags
         elif [ "$_BRANCH_NAME" = "sit" ]; then
           gsutil -m rsync -r -d /workspace/dap-composer-cicd/dags gs://asia-southeast2-sit-env-f9237651-bucket/dags
-        elif [ "$_BRANCH_NAME" = "uat" ]; then
+        elif [ "$_BRANCH_NAME" = "test" ]; then
           gsutil -m rsync -r -d /workspace/dap-composer-cicd/dags gs://asia-southeast2-uat-env-bucket/dags
         elif [ "$_BRANCH_NAME" = "production" ]; then
           gsutil -m rsync -r -d /workspace/dap-composer-cicd/dags gs://asia-southeast2-prod-env-bucket/dags
