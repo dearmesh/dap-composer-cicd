@@ -19,6 +19,19 @@ steps:
         cd /workspace/dap-composer-cicd
         git checkout $BRANCH_NAME
 
+# Step 2: Check for changes in the dags/ folder
+  - id: "Detect-Changes"
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        echo "Checking for changes in the dags/ folder..."
+        if ! git diff --name-only HEAD~1 HEAD | grep '^dags/'; then
+          echo "No changes in DAG files. Exiting."
+          exit 0
+        fi
+
 
 substitutions:
   _BRANCH_NAME: "main"
