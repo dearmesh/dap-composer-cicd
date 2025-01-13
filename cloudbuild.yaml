@@ -31,6 +31,7 @@ steps:
     args:
       - -c
       - |
+        echo $_BRANCH_NAME
         echo "Deploying DAGs to the Composer bucket for branch: $_BRANCH_NAME"
         case "$_BRANCH_NAME" in 
           "dev")
