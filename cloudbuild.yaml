@@ -32,6 +32,36 @@ steps:
           exit 0
         fi
 
+# Step 3: Sync DAGs to the appropriate Composer bucket
+  - id: "Upload"
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        echo $_BRANCH_NAME
+        echo "Deploying DAGs to the Composer bucket for branch: $_BRANCH_NAME"
+        case "$_BRANCH_NAME" in 
+          "dev")
+            TARGET_BUCKET="gs://asia-southeast2-dev-env-4cd8345a-bucket/dags"
+            ;;
+          "sit")
+            TARGET_BUCKET="gs://asia-southeast2-sit-env-f9237651-bucket/dags"
+            ;;
+          "uat")
+            TARGET_BUCKET="gs://asia-southeast2-uat-env-bucket/dags"
+            ;;
+          "production")
+            TARGET_BUCKET="gs://asia-southeast2-prod-env-bucket/dags"
+            ;;
+          *)
+            echo "Error: Unsupported branch $_BRANCH_NAME"
+            exit 1
+            ;;
+        esac
+        echo "Syncing DAGs to $TARGET_BUCKET..."
+        gsutil -m rsync -r -d /workspace/dap-composer-cicd/dags "$TARGET_BUCKET" 
+
 
 substitutions:
   _BRANCH_NAME: "main"
