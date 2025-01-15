@@ -36,17 +36,17 @@ steps:
       - |
         echo "Deploying changed SP files..."
         CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | grep '^QUERY/SP/.*\.sql')
-        if [ -z "${CHANGED_FILES}" ]; then
+        if [ -z "$${CHANGED_FILES}" ]; then
           echo "No valid SP files to deploy."
           exit 0
         fi
-        echo "${CHANGED_FILES}" > /workspace/changed_files.txt
+        echo "$${CHANGED_FILES}" > /workspace/changed_files.txt
         while IFS= read -r sql_file; do
-          if [ -f "${sql_file}" ]; then
-            echo "Deploying ${sql_file}"
-            gcloud bq query --project_id=$PROJECT_ID --use_legacy_sql=false --file="${sql_file}"
+          if [ -f "$${sql_file}" ]; then
+            echo "Deploying $${sql_file}"
+            gcloud bq query --project_id=$PROJECT_ID --use_legacy_sql=false --file="$${sql_file}"
           else
-            echo "File ${sql_file} no longer exists."
+            echo "File $${sql_file} no longer exists."
           fi
         done < /workspace/changed_files.txt
         echo "Deployment complete."
@@ -64,12 +64,12 @@ steps:
           exit 0
         fi
         while IFS= read -r sql_file; do
-          if [ -f "${sql_file}" ]; then
-            sp_name=$(basename "${sql_file}" .sql) # Extract SP name
-            echo "Running stored procedure: ${sp_name}"
-            gcloud bq query --project_id=$PROJECT_ID --use_legacy_sql=false --query="CALL dataset_name.${sp_name}();"
+          if [ -f "$${sql_file}" ]; then
+            sp_name=$(basename "$${sql_file}" .sql) # Extract SP name
+            echo "Running stored procedure: $${sp_name}"
+            gcloud bq query --project_id=$PROJECT_ID --use_legacy_sql=false --query="CALL dataset_name.$${sp_name}();"
           else
-            echo "File ${sql_file} no longer exists."
+            echo "File $${sql_file} no longer exists."
           fi
         done < /workspace/changed_files.txt
         echo "Stored procedure validation complete."
