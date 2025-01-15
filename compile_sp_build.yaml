@@ -13,69 +13,100 @@ steps:
         git checkout $_BRANCH_NAME
         echo "Repository cloned and branch checked out to $_BRANCH_NAME."
 
-  # Step 2: Detect changed SP files in the Query > SP folder
-  - id: "Detect Changed Files"
-    name: 'gcr.io/cloud-builders/git'
-    entrypoint: bash
-    args:
-      - -c
-      - |
-        echo "Detecting changed SQL files..."
-        cd /workspace/dap-composer-cicd
-        SP_FOLDER="QUERY/SP"  # Define SP_FOLDER here
-        CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | grep "$${SP_FOLDER}/.*\.sql")
-        if [ -z "$${CHANGED_FILES}" ]; then
-          echo "No changed SQL files detected."
-          exit 0
-        fi
-        echo "$${CHANGED_FILES}" > /workspace/changed_files.txt
-        echo "Changed files:"
-        cat /workspace/changed_files.txt
 
-  # Step 3: Deploy the changed SP files to BigQuery
-  - id: "Deploy SPs"
+  # Step 2: Run all SP files in the QUERY/SP folder
+  - id: "Run All SPs"
     name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: bash
     args:
       - -c
       - |
-        echo "Deploying changed SP files..."
-        if [ ! -s /workspace/changed_files.txt ]; then
-          echo "No changed files to deploy."
-          exit 0
+        echo "Running all SP files in the QUERY/SP folder..."
+        SP_FOLDER="/workspace/dap-composer-cicd/QUERY/SP"
+        if [ ! -d "$$SP_FOLDER" ]; then
+          echo "SP folder not found: $$SP_FOLDER"
+          exit 1
         fi
-        while IFS= read -r sql_file; do
-          if [ -f "$${sql_file}" ]; then
-            echo "Deploying $${sql_file}"
-            gcloud bq query --project_id=$PROJECT_ID --use_legacy_sql=false --file="$${sql_file}"
-          else
-            echo "File $${sql_file} no longer exists."
-          fi
-        done < /workspace/changed_files.txt
-        echo "Deployment complete."
 
-  # Step 4: Run the changed stored procedures for validation
-  - id: "Run SPs"
-    name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: bash
-    args:
-      - -c
-      - |
-        echo "Validating SPs by running them..."
-        if [ ! -s /workspace/changed_files.txt ]; then
-          echo "No changed files to run."
-          exit 0
-        fi
-        while IFS= read -r sql_file; do
-          if [ -f "$${sql_file}" ]; then
-            sp_name=$(basename "$${sql_file}" .sql) # Extract SP name
-            echo "Running stored procedure: ${sp_name}"
-            gcloud bq query --project_id=$PROJECT_ID --use_legacy_sql=false --query="CALL dataset_name.${sp_name}();"
+        # Loop through all .sql files in the folder
+        for sql_file in "$$SP_FOLDER"/*.sql; do
+          if [ -f "$$sql_file" ]; then
+            sp_name=$(basename "$$sql_file" .sql) # Extract SP name
+            echo "Running stored procedure: $$sp_name"
+            gcloud bq query --project_id=$PROJECT_ID --use_legacy_sql=false --query="CALL dataset_name.$$sp_name();"
           else
-            echo "File $${sql_file} no longer exists."
+            echo "No .sql files found in $$SP_FOLDER"
+            exit 0
           fi
-        done < /workspace/changed_files.txt
-        echo "Stored procedure validation complete."
+        done
+        echo "All SP files have been run successfully.        
+
+  # # Step 2: Detect changed SP files in the Query > SP folder
+  # - id: "Detect Changed Files"
+  #   name: 'gcr.io/cloud-builders/git'
+  #   entrypoint: bash
+  #   args:
+  #     - -c
+  #     - |
+  #       echo "Detecting changed SQL files..."
+  #       cd /workspace/dap-composer-cicd
+  #       SP_FOLDER="QUERY/SP"  # Define SP_FOLDER here
+  #       CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | grep "$${SP_FOLDER}/.*\.sql")
+  #       if [ -z "$${CHANGED_FILES}" ]; then
+  #         echo "No changed SQL files detected."
+  #         exit 0
+  #       fi
+  #       echo "$${CHANGED_FILES}" > /workspace/changed_files.txt
+  #       echo "Changed files:"
+  #       cat /workspace/changed_files.txt
+
+  # # Step 3: Deploy the changed SP files to BigQuery
+  # - id: "Deploy SPs"
+  #   name: 'gcr.io/cloud-builders/gcloud'
+  #   entrypoint: bash
+  #   args:
+  #     - -c
+  #     - |
+  #       echo "Deploying changed SP files..."
+  #       if [ ! -s /workspace/changed_files.txt ]; then
+  #         echo "No changed files to deploy."
+  #         exit 0
+  #       fi
+  #       while IFS= read -r sql_file; do
+  #         if [ -f "$${sql_file}" ]; then
+  #           echo "Deploying $${sql_file}"
+  #           gcloud bq query --project_id=$PROJECT_ID --use_legacy_sql=false --file="$${sql_file}"
+  #         else
+  #           echo "File $${sql_file} no longer exists."
+  #         fi
+  #       done < /workspace/changed_files.txt
+  #       echo "Deployment complete."
+
+  # # Step 4: Run the changed stored procedures for validation
+  # - id: "Run SPs"
+  #   name: 'gcr.io/cloud-builders/gcloud'
+  #   entrypoint: bash
+  #   args:
+  #     - -c
+  #     - |
+  #       echo "Validating SPs by running them..."
+  #       if [ ! -s /workspace/changed_files.txt ]; then
+  #         echo "No changed files to run."
+  #         exit 0
+  #       fi
+  #       while IFS= read -r sql_file; do
+  #         if [ -f "$${sql_file}" ]; then
+  #           sp_name=$(basename "$${sql_file}" .sql) # Extract SP name
+  #           echo "Running stored procedure: ${sp_name}"
+  #           gcloud bq query --project_id=$PROJECT_ID --use_legacy_sql=false --query="CALL dataset_name.${sp_name}();"
+  #         else
+  #           echo "File $${sql_file} no longer exists."
+  #         fi
+  #       done < /workspace/changed_files.txt
+  #       echo "Stored procedure validation complete."
+
+
+
 
 options:
   logging: CLOUD_LOGGING_ONLY
