@@ -16,7 +16,7 @@ steps:
 
   # Step 2: Run all SP files in the QUERY/SP folder
   - id: "Run All SPs"
-    name: 'gcr.io/cloud-builders/gcloud'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: bash
     args:
       - -c
@@ -33,7 +33,7 @@ steps:
           if [ -f "$$sql_file" ]; then
             sp_name=$(basename "$$sql_file" .sql) # Extract SP name
             echo "Running stored procedure: $$sp_name"
-            gcloud bq query --project_id=$PROJECT_ID --use_legacy_sql=false --query="CALL dataset_name.$$sp_name();"
+            bq query --project_id=$PROJECT_ID --use_legacy_sql=false --query="CALL dataset_name.$$sp_name();"
           else
             echo "No .sql files found in $$SP_FOLDER"
             exit 0
