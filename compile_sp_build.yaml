@@ -22,7 +22,7 @@ steps:
       - |
         echo "Detecting changed SQL files..."
         cd /workspace/dap-composer-cicd
-        SP_FOLDER="/workspace/dap-composer-cicd/QUERY/SP"  # Hardcoded SP folder
+        SP_FOLDER="QUERY/SP"  # Define SP_FOLDER here
         CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | grep "${SP_FOLDER}/.*\.sql")
         if [ -z "${CHANGED_FILES}" ]; then
           echo "No changed SQL files detected."
@@ -32,6 +32,7 @@ steps:
         echo "Changed files:"
         cat /workspace/changed_files.txt
 
+        
   # Step 3: Deploy the changed SP files to BigQuery
   - id: "Deploy SPs"
     name: 'gcr.io/cloud-builders/gcloud'
