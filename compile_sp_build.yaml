@@ -1,6 +1,6 @@
 steps:
   # Step 1: Clone the repository 
-  - id: "Clone Repository"
+  - id: "Clone"
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: bash
     args:
@@ -9,9 +9,7 @@ steps:
         echo "Cloning repository from GitHub..."
         git clone https://github.com/dearmesh/dap-composer-cicd.git /workspace/dap-composer-cicd
         cd /workspace/dap-composer-cicd
-        echo "Checking out branch $_BRANCH_NAME"
-        git checkout $_BRANCH_NAME
-        echo "Repository cloned and branch checked out to $_BRANCH_NAME."
+        git checkout $_BRANCH_NAME 
 
   # Step 2: Detect changed SP files in the Query > SP folder
   - id: "Detect Changed Files"
