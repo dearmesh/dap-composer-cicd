@@ -13,3 +13,4 @@
 # 7 test gemini 
 # 8 test gemini 2 
 # 9 test gemini 3
+# 10 test env dev baru + library
