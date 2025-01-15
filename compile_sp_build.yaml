@@ -1,0 +1,74 @@
+steps:
+  # Step 1: Clone the repository 
+  - id: "Clone"
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        echo "Cloning repository from GitHub..."
+        git clone https://github.com/dearmesh/dap-composer-cicd.git /workspace/dap-composer-cicd
+        cd /workspace/dap-composer-cicd
+        git checkout $_BRANCH_NAME 
+
+  # Step 2: Detect changed SP files in the Query > SP folder
+  - id: "Detect-Changes"
+    name: 'gcr.io/cloud-builders/git'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        cd /workspace/dap-composer-cicd
+        SP_FOLDER="/workspace/dap-composer-cicd/QUERY/SP"
+        CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | grep "$SP_FOLDER/.*\.sql")
+        echo "$CHANGED_FILES" > /workspace/changed_files.txt
+
+  # Step 3: Deploy the changed SP files to BigQuery
+  - id: "Running SPs"
+    name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        while IFS= read -r sql_file; do
+          if [ -f "$sql_file" ]; then
+            echo "Deploying $sql_file"
+            gcloud bq query --project_id=$PROJECT_ID --use_legacy_sql=false --file="$sql_file"
+          else
+            echo "File $sql_file no longer exists."
+          fi
+        done < /workspace/changed_files.txt
+
+  # Step 4 (Optional): Run the changed stored procedures for validation
+  - id: "Calling SPs"
+    name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        while IFS= read -r sql_file; do
+          if [ -f "$sql_file" ]; then
+            sp_name=$(basename "$sql_file" .sql) # Extract SP name
+            echo "Running stored procedure: $sp_name"
+            gcloud bq query --project_id=$PROJECT_ID --use_legacy_sql=false --query="CALL dataset_name.$sp_name();"
+          else
+            echo "File $sql_file no longer exists."
+          fi
+        done < /workspace/changed_files.txt
+
+
+
+  # - id: "Debug"
+  #   name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  #   entrypoint: bash
+  #   args:
+  #     - -c
+  #     - |
+  #       echo "Environment variables:"
+  #       env
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+substitutions:
+  _BRANCH_NAME: "main"
