@@ -13,19 +13,24 @@ steps:
         git checkout $_BRANCH_NAME
         echo "Repository cloned and branch checked out to $_BRANCH_NAME."
 
-  # Step 2: Check for changes in the QUERY/SP folder
-  - id: "Detect-Changes"
-    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  # Step 2: Detect changed SP files in the Query > SP folder
+  - id: "Detect Changed Files"
+    name: 'gcr.io/cloud-builders/git'
     entrypoint: bash
     args:
       - -c
       - |
-        echo "Checking for changes in the QUERY/SP folder..."
-        if ! git diff --name-only HEAD~1 HEAD | grep '^QUERY/SP/'; then
-          echo "No changes in SP files. Exiting."
+        echo "Detecting changed SQL files..."
+        cd /workspace/dap-composer-cicd
+        SP_FOLDER="QUERY/SP"  # Define SP_FOLDER here
+        CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | grep "$${SP_FOLDER}/.*\.sql")
+        if [ -z "$&{CHANGED_FILES}" ]; then
+          echo "No changed SQL files detected."
           exit 0
         fi
-        echo "Changes detected in SP files. Proceeding to deployment."
+        echo "$&{CHANGED_FILES}" > /workspace/changed_files.txt
+        echo "Changed files:"
+        cat /workspace/changed_files.txt
 
   # Step 3: Deploy the changed SP files to BigQuery
   - id: "Deploy SPs"
@@ -35,12 +40,10 @@ steps:
       - -c
       - |
         echo "Deploying changed SP files..."
-        CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | grep '^QUERY/SP/.*\.sql')
-        if [ -z "$${CHANGED_FILES}" ]; then
-          echo "No valid SP files to deploy."
+        if [ ! -s /workspace/changed_files.txt ]; then
+          echo "No changed files to deploy."
           exit 0
         fi
-        echo "$${CHANGED_FILES}" > /workspace/changed_files.txt
         while IFS= read -r sql_file; do
           if [ -f "$${sql_file}" ]; then
             echo "Deploying $${sql_file}"
@@ -60,14 +63,14 @@ steps:
       - |
         echo "Validating SPs by running them..."
         if [ ! -s /workspace/changed_files.txt ]; then
-          echo "No SP files to validate."
+          echo "No changed files to run."
           exit 0
         fi
         while IFS= read -r sql_file; do
           if [ -f "$${sql_file}" ]; then
             sp_name=$(basename "$${sql_file}" .sql) # Extract SP name
-            echo "Running stored procedure: $${sp_name}"
-            gcloud bq query --project_id=$PROJECT_ID --use_legacy_sql=false --query="CALL dataset_name.$${sp_name}();"
+            echo "Running stored procedure: ${sp_name}"
+            gcloud bq query --project_id=$PROJECT_ID --use_legacy_sql=false --query="CALL dataset_name.${sp_name}();"
           else
             echo "File $${sql_file} no longer exists."
           fi
