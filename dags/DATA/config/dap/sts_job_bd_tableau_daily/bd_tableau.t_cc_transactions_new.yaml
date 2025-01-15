@@ -1,0 +1,195 @@
+#GCS FOLDER CONFIGURATION
+source_gcs_folder:
+  bucket: NONE
+  folder: NONE
+process_gcs_folder:
+  bucket: NONE
+  folder: NONE
+backup_gcs_folder:
+  bucket: NONE
+  folder: NONE
+duplicate_gcs_folder:
+  bucket: NONE
+  folder: NONE
+error_gcs_folder:
+  bucket: NONE
+  folder: NONE
+archive_gcs_folder:
+  bucket: NONE
+  folder: NONE
+
+#FILE FORMAT CONFIGURATION
+file_format:
+  file_type: NONE
+  header: NONE
+  delimiter: NONE
+  file_pattern: NONE
+  count_delimiter: NONE
+  retention_file_day: NONE # 3 years
+  retention_table_day: NONE # 3 years
+
+
+#BIG QUERY CONFIGURATION
+temp_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: NONE
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    NONE
+
+main_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: t_cc_transactions_new
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    CREATE OR REPLACE EXTERNAL TABLE v_dataset_id.t_cc_transactions_new
+    (
+      dbsc	string,
+      smttacct	string,
+      smttcrdnbr	string,
+      smtttxndte	numeric,
+      smtttxncde	numeric,
+      smttxnamt	numeric,
+      smttpstdte	numeric,
+      smttautcde	string,
+      smttdesc	string,
+      smttrefnbr	string,
+      smttmccde	numeric,
+      smttpdt	numeric,
+      smttocurcd	string,
+      smttocuram	numeric,
+      smttstlcde	string,
+      smttstlamt	numeric,
+      smttfilbuf	string,
+      smttmtind	string,
+      smttbnknbr	numeric,
+      smttmchnbr	numeric,
+      cdtype	string,
+      ctry1	string,
+      smttrefnbr2	string,
+      ctry2	int,
+      ncard_id	string,
+      mech_nbr	string,
+      txcddsc	string,
+      txcdcrflg	string,
+      flag_bca	string,
+      cntry	string,
+      periode	string,
+      base	string,
+      trxdesc	string,
+      merchx	string,
+      acctcrlmtp	numeric,
+      acctcust	string,
+      merch_type	string,
+      typ	string,
+      principal	string,
+      trx_type	string,
+      location_	string,
+      online_source_merchant	int,
+      online_source_field	int,
+      online_source_keyin	int,
+      mcc_cat	string,
+      trxdesc2	string,
+      trxdesc3	string,
+      trxdesc4	string,
+      merch	string,
+      merch_grp	string,
+      fl_svol	string,
+      trxdesc_svol	string,
+      merchant_cat_by_mcc_lvl2	string,
+      merchant_cat_by_mcc_lvl1	string,
+      ecifref	string,
+      city_district_type	string,
+      city_district_name	string,
+      province	string,
+      country	string,
+      partner_group	string
+    )
+    WITH PARTITION COLUMNS 
+    (
+    date_pr string
+    )
+    WITH CONNECTION `v_connection`
+    OPTIONS 
+    (
+      uris = ['gs://v_bucket/*'],
+      format = 'CSV',
+      field_delimiter = '\x01',
+      quote="",
+      null_marker = '\\N',
+      hive_partition_uri_prefix = 'gs://v_bucket/',
+      require_hive_partition_filter=false
+    );
+
+#QUERY CONFIGURATION
+sql_operations:
+  processing_location: NONE
+  sql_insert_temp_ext_to_temp: |
+      NONE
+  sql_check_dt_pr_exists : |
+      NONE
+  sql_insert: |
+    *
+  sql_delete: NONE
+  sql_prefix_query_table: |
+
+#SP BIGQUERY
+sp_operations:
+  sp_location: NONE
+  sp_dataset_id: NONE
+  sp_key_column: NONE
+  sp_validate_column: NONE
+  sp_validate_duplicate: NONE
+  sp_check_dependency: NONE
+  sp_validate_master_job: NONE
+  sp_datamart_name: NONE
+  sp_datamart_parameter: NONE
+  sp_check_data_retention : NONE
+  sp_data_cleansing_export : NONE
+  sp_delete_data_cleansing : NONE
+
+#STS JOB
+sts_operations:
+  sts_project_id: NONE
+  sts_job_name: NONE
+
+#AdditionalParameters
+additionalparam:
+  additionalparam1: NONE
+  additionalparam2: NONE
+  additionalparam3: NONE
+  additionalparam4: NONE
+  additionalparam5: NONE
+  additionalparam6: NONE
+  additionalparam7: NONE
+  additionalparam8: NONE
+  additionalparam9: NONE
+  additionalparam10: NONE

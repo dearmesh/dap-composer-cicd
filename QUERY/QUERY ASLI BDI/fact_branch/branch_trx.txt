@@ -1,0 +1,130 @@
+select * from dmu_workspace.vw_nrp_trx_branch
+
+create view dmu_workspace.vw_nrp_trx_branch as
+with 
+    acc as
+    (
+    select cif, trim(COD_ACCT_NO) as account_number, 
+    prod_code, 
+    prod_name, 
+    lob_code,
+    CASE WHEN lob_code IN(10) THEN 'CMM'
+         WHEN lob_code IN(11) THEN 'CMM'
+         WHEN lob_code IN(12) THEN 'Personal Banking'
+         WHEN lob_code IN(13) THEN 'Consumer Affluent'
+         WHEN lob_code IN(31) THEN 'SME' 
+         WHEN lob_code IN(32) THEN 'SEMM'
+         WHEN lob_code IN(41,42) THEN 'Commercial' 
+         WHEN lob_code IN(61) THEN 'Fin Institution'
+         WHEN lob_code IN(52) THEN 'SAM' 
+         WHEN lob_code IN(71,73) THEN 'Profesional Market'
+         WHEN lob_code IN(51) THEN 'Corp Banking' 
+         WHEN lob_code IN(53) THEN 'Joint Finance' 
+         WHEN lob_code IN(81) THEN 'Syariah'
+         WHEN lob_code IN(74) THEN 'ALCO' 
+         WHEN lob_code = 0 THEN 'BLANK' ELSE 'BLANK' END as lob_name,
+    date_pr
+    from bd_tableau.dm_casa_funding
+    where date_pr='20240930' 
+	and prod_code not in (370,371,372,379)
+    and not (prod_code between 615 and 626)
+    ),
+    mnemonic as
+    (
+    select 
+    TXT_TXN_DESC as TXT_TXN_DESC_MNEMONIC,
+    COD_TXN_MNEMONIC,
+    TXT_BASE_TXN_DESC,
+    COD_TXN_CATEGORY,
+    COD_TXN_MODE,
+    COD_ORG_CHANNEL,
+    date_pr
+    from newmisplus2.BD_BA_TXN_MNEMONIC
+    where date_pr='20240930' 
+    and cod_txn_category='CUST' and cod_org_channel='BRN'
+    and cod_txn_mnemonic not in (1040,1408,1431,1433,1451,1454,1455,1456,1459,1465,1708,1908)
+    ),
+    branch as
+    (
+    select distinct branch_code_original, branch_name, am_code, region, date_pr
+    from bd_tableau.ref_oc_rb
+    where date_pr = '20240930'
+    ),
+    trx as
+    (
+    select 'BRANCH' as channel_type, dat_txn as trx_timestamp, to_date(dat_txn) as trx_date, 
+    cod_userno,
+    trim(ref_txn_no) as ref_no, 
+    trim(ref_usr_no) as ref_usr_no, 
+    trim(cod_acct_no) as cod_acct_no, 
+    cod_auth_id,
+    cod_txn_mnemonic,
+    cod_drcr as dr_or_cr,
+    'Approved' as `result`, 
+    1 as no_of_trx, 
+    amt_txn_tcy * rat_conv_tclcy as amount, 
+    amt_txn_tcy as amount_origin,
+    cod_txn_ccy as ccy_origin, 
+    rat_conv_tclcy as ccy_rate,
+    txt_txn_desc as trx_description,
+    cast(cod_cc_brn_txn as string) as branch_code,
+    date_pr
+    from newmisplus2.BD_CH_NOBOOK
+    where date_pr='20240930'
+    and cast(cod_cc_brn_txn as string) in (select branch_code_original from branch)
+    and cod_txn_mnemonic in (select cod_txn_mnemonic from mnemonic)
+    and trim(cod_auth_id) not like 'HTV_%'
+    and not (cod_txn_mnemonic=1008 and trim(ref_usr_no) <> '2030')
+    and not(
+            upper(TXT_TXN_DESC) like '%ADM TRANSFER%' 
+            or upper(TXT_TXN_DESC) like '%ADM TRNSFR%' 
+            or upper(TXT_TXN_DESC) like '%ADM TRF%' 
+            or upper(TXT_TXN_DESC) like '%FEE WAIVE%'
+            or upper(TXT_TXN_DESC) like '%SERVICE CHARGE%'
+            or (upper(TXT_TXN_DESC) like '%FEE%' and COD_TXN_MNEMONIC in (2622,2647))
+            or (REF_USR_NO like 'FEE%' and COD_TXN_MNEMONIC=2622)
+            or (REF_USR_NO like '%REV%' and COD_TXN_MNEMONIC=2622 and AMT_TXN<0)
+            or (TXT_TXN_DESC='BAGI HASIL' and COD_DRCR='C'  and COD_TXN_MNEMONIC=2648)
+            or (COD_TXN_MNEMONIC=2647 and COD_DRCR='D' and TXT_TXN_DESC like 'PAJAK%')
+            or (COD_TXN_MNEMONIC=1408 and REF_USR_NO='3955' and TXT_TXN_DESC like 'REV_PAJAK%')
+            or ((COD_USERNO=3955 or COD_CC_BRN_TXN=9211) and TXT_TXN_DESC like 'REV%')
+            or (REF_USR_NO like '8a42bdb%' and TXT_TXN_DESC like '%PAJAK%')
+            )
+    ),
+    log as
+    (
+    select date_pr, trim(ref_txn_no) as ref_no,cod_network_id,cod_payment_txn, count(1) 
+    from newmisplus2.bd_pm_txn_log
+    where date_pr = '20240930'
+    and trim(ref_txn_no) in (select distinct ref_no from trx) 
+    group by 1,2,3,4
+    ),
+    stg as
+    (
+    select trx.*,acc.cif,acc.account_number, acc.prod_code, acc.prod_name, acc.lob_code, acc.lob_name,
+    mnemonic.txt_txn_desc_mnemonic,mnemonic.txt_base_txn_desc,mnemonic.cod_txn_category,mnemonic.cod_txn_mode,mnemonic.cod_org_channel,
+    log.cod_network_id,cod_payment_txn,
+        case when trx.COD_TXN_MNEMONIC IN (1075,1321,1452,1466,1467,1471,1481,1482,2282,2329,2330) then 'PAYMENT_PURCHASE'
+    when trx.COD_TXN_MNEMONIC in (1401,2250,2236) and trx.dr_or_cr='C' then 'CASH_DEPOSIT'
+    when trx.COD_TXN_MNEMONIC in (1453,1514,6601,6501) and trx.dr_or_cr='C' then 'CHEQUE_DEPOSIT'
+    when trx.COD_TXN_MNEMONIC in (1001,1301,2201,2267,2283,2285,2301,2353) and trx.dr_or_cr='D' then 'CASH_WITHDRAWAL'
+    when trx.COD_TXN_MNEMONIC in (1013,6101) and trx.dr_or_cr='D' then 'CHEQUE_WITHDRAWAL'
+    when trx.COD_TXN_MNEMONIC in (1006,1015,1320,1321,1702,1710,2204,2205,2269,2289,2305,2647,2654,2640,2670,7606,7607,2212,1703,1704) then 'OVERBOOKING'
+    when trx.COD_TXN_MNEMONIC in (2271,2273,2295,2297,2311,2315) and trx.dr_or_cr='D' then 'ONLINE_TRF_OUT'
+    when trx.COD_TXN_MNEMONIC in (2382) and trx.dr_or_cr='D' then 'BIFAST_TRF_OUT'
+    when trx.COD_TXN_MNEMONIC in (2622) and substr(upper(trim(trx.trx_description)),1,6)='BIFAST' and trx.dr_or_cr='D' then 'BIFAST_TRF_OUT'
+    when trx.COD_TXN_MNEMONIC in (1008) and trx.dr_or_cr='D' and log.cod_payment_txn like '%SKN%'  then 'SKN'
+    when trx.COD_TXN_MNEMONIC in (1008) and trx.dr_or_cr='D' and log.cod_payment_txn like '%RTGS%' then 'RTGS'
+    when trx.COD_TXN_MNEMONIC in (1008) and trx.dr_or_cr='D' and log.cod_payment_txn like '%SWIFT%' then 'SWIFT'
+    when trx.COD_TXN_MNEMONIC in (1421,1424,1428,1429,1431,1432,1433,1434,1435,2102,7072) then 'INSTALLMENT'
+    when regexp_like(upper(trx.trx_description),"LOAN LIQUIDATION")>0 and trx.COD_TXN_MNEMONIC in (1008) and trx.dr_or_cr='D' then 'INSTALLMENT'
+    end as trx_type,
+    branch.branch_name
+    from trx
+    left join branch on trx.date_pr = branch.date_pr and trx.branch_code= branch.branch_code_original
+    left join mnemonic on trx.date_pr = mnemonic.date_pr and trx.cod_txn_mnemonic = mnemonic.cod_txn_mnemonic
+    left join acc on trx.date_pr = acc.date_pr and trx.cod_acct_no = acc.account_number
+    left join log on trx.date_pr = log.date_pr and trx.ref_no = log.ref_no
+)
+
+select * from stg

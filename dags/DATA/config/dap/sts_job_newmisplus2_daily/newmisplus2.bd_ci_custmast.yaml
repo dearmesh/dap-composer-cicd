@@ -1,0 +1,308 @@
+#GCS FOLDER CONFIGURATION
+source_gcs_folder:
+  bucket: NONE
+  folder: NONE
+process_gcs_folder:
+  bucket: NONE
+  folder: NONE
+backup_gcs_folder:
+  bucket: NONE
+  folder: NONE
+duplicate_gcs_folder:
+  bucket: NONE
+  folder: NONE
+error_gcs_folder:
+  bucket: NONE
+  folder: NONE
+archive_gcs_folder:
+  bucket: NONE
+  folder: NONE
+
+#FILE FORMAT CONFIGURATION
+file_format:
+  file_type: NONE
+  header: NONE
+  delimiter: NONE
+  file_pattern: NONE
+  count_delimiter: NONE
+  retention_file_day: NONE # 3 years
+  retention_table_day: NONE # 3 years
+
+
+#BIG QUERY CONFIGURATION
+temp_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: NONE
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    NONE
+
+main_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: bd_ci_custmast
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    CREATE OR REPLACE EXTERNAL TABLE v_dataset_id.bd_ci_custmast
+    (
+      cod_cust_id	numeric,
+      dat_cust_open	timestamp,
+      cod_bank_card	string,
+      flg_cust_typ	string,
+      cif_type	string,
+      flg_staff	string,
+      flg_loc_glob	string,
+      cod_cc_homebrn	numeric,
+      cod_officr_id	string,
+      nam_cust_shrt	string,
+      txt_cust_prefix	string,
+      nam_cust_full	string,
+      nam_cust_last	string,
+      nam_cust_mid	string,
+      nam_cust_first	string,
+      cod_cust_phonetic	string,
+      cod_mid_phonetic	string,
+      cod_first_phonetic	string,
+      flg_member	string,
+      cod_member_no	string,
+      cod_cust_stat	string,
+      txt_cust_desgn	string,
+      flg_ic_typ	string,
+      cod_cust_natl_id	string,
+      cod_natl_id_old	string,
+      cod_cust_lang	string,
+      cod_income_cat	string,
+      cod_sign_typ	string,
+      txt_profess_cat	numeric,
+      cod_tds	numeric,
+      ref_cust_it_num	string,
+      txt_custadr_add1	string,
+      txt_custadr_add2	string,
+      txt_custadr_add3	string,
+      nam_custadr_city	string,
+      nam_custadr_state	string,
+      nam_custadr_cntry	string,
+      txt_custadr_zip	string,
+      ref_cust_phone	string,
+      ref_cust_phone_off	string,
+      ref_cust_fax	string,
+      ref_cust_telex	string,
+      ref_cust_email	string,
+      txt_permadr_add1	string,
+      txt_permadr_add2	string,
+      txt_permadr_add3	string,
+      nam_permadr_city	string,
+      nam_permadr_cntry	string,
+      nam_permadr_state	string,
+      txt_permadr_zip	string,
+      dat_birth_cust	timestamp,
+      txt_cust_sex	string,
+      cod_cust_marstat	numeric,
+      ctr_cust_spouses	numeric,
+      nam_cust_spouse	string,
+      txt_spouse_occpn	string,
+      ctr_dpndt_chldrn	numeric,
+      ctr_dpndt_othrs	numeric,
+      cod_typ_accom	numeric,
+      txt_lgl_rsdnc_stat	string,
+      txt_ethnic_origin	string,
+      txt_cust_natnlty	string,
+      cod_cust_bldgrp	string,
+      txt_cust_educn	string,
+      flg_cust_memo	string,
+      dat_incorporated	timestamp,
+      nam_cntry_incorp	string,
+      cod_business_regno	string,
+      cod_business_cat	numeric,
+      txt_business_typ	string,
+      nam_signatory1	string,
+      nam_signatory2	string,
+      nam_signatory3	string,
+      nam_signatory4	string,
+      nam_signatory5	string,
+      txt_desgn_signtry1	string,
+      txt_desgn_signtry2	string,
+      txt_desgn_signtry3	string,
+      txt_desgn_signtry4	string,
+      txt_desgn_signtry5	string,
+      nam_director1	string,
+      nam_director2	string,
+      nam_director3	string,
+      nam_director4	string,
+      nam_director5	string,
+      cod_report1	numeric,
+      cod_report2	numeric,
+      cod_report3	numeric,
+      flg_mnt_status	string,
+      cod_mnt_action	string,
+      cod_last_mnt_makerid	string,
+      cod_last_mnt_chkrid	string,
+      dat_last_mnt	timestamp,
+      ctr_updat_srlno	numeric,
+      flg_key_chg	string,
+      flg_cust_status	string,
+      flg_replicate	string,
+      cod_liab_no	numeric,
+      credit_rating	string,
+      dat_revision	timestamp,
+      fx_cust_clean_risk_limit	numeric,
+      fx_clean_risk_limit	numeric,
+      amt_limit_tot	numeric,
+      cod_ccy_limit	numeric,
+      sec_cust_clean_risk_limit	numeric,
+      sec_clean_risk_limit	numeric,
+      sec_cust_pstl_risk_limit	numeric,
+      sec_pstl_risk_limit	numeric,
+      dat_cif_type_change	timestamp,
+      flg_rest_cust	string,
+      flg_lock_fac	numeric,
+      txt_mob_email_add	string,
+      cod_verified_reason	numeric,
+      fx_cust_cat	string,
+      cod_cust_introducer_id	numeric,
+      cod_employee_id	string,
+      ctr_mis_codes	numeric,
+      cod_mis_cust_code_1	string,
+      cod_mis_cust_code_2	string,
+      cod_mis_cust_code_3	string,
+      cod_mis_cust_code_4	string,
+      cod_mis_cust_code_5	string,
+      cod_mis_cust_code_6	string,
+      cod_mis_cust_code_7	string,
+      cod_mis_cust_code_8	string,
+      cod_mis_cust_code_9	string,
+      cod_mis_cust_code_10	string,
+      cod_mis_comp_code_1	string,
+      cod_mis_comp_code_2	string,
+      cod_mis_comp_code_3	string,
+      cod_mis_comp_code_4	string,
+      cod_mis_comp_code_5	string,
+      cod_mis_comp_code_6	string,
+      cod_mis_comp_code_7	string,
+      cod_mis_comp_code_8	string,
+      cod_mis_comp_code_9	string,
+      cod_mis_comp_code_10	string,
+      flg_minor	string,
+      cod_guardian_type	numeric,
+      cod_acct_no_default	string,
+      txt_cust_residence	string,
+      afl_issue_date	timestamp,
+      afl_expiry_date	timestamp,
+      afl_effective_date	timestamp,
+      last_renew_date	timestamp,
+      flg_unadv	string,
+      flg_doc_complete	string,
+      flg_kio	string,
+      txt_holdadr_add1	string,
+      txt_holdadr_add2	string,
+      txt_holdadr_add3	string,
+      nam_holdadr_city	string,
+      nam_holdadr_state	string,
+      nam_holdadr_cntry	string,
+      txt_holdadr_zip	string,
+      ref_hold_phone	string,
+      ref_hold_phone_off	string,
+      ref_hold_fax	string,
+      ref_hold_telex	string,
+      ref_hold_email	string,
+      cod_cust_status	numeric,
+      cod_tds_2	numeric,
+      ref_res_phone_country	string,
+      ref_res_phone_area	string,
+      ref_res_phone_extn	string,
+      ref_phone_mobile	string,
+      ref_office_phone_country	string,
+      ref_office_phone_area	string,
+      ref_office_phone_extn	string,
+      flg_blocked	string,
+      cod_block_reason	string,
+      flg_verified_stat	string,
+      dat_verified	string,
+      cod_secrecy_lvl	numeric,
+      cod_crif_consent_lvl	numeric,
+      cod_entity_vpd	numeric
+    )
+    WITH PARTITION COLUMNS 
+    (
+    date_pr string
+    )
+    WITH CONNECTION `v_connection`
+    OPTIONS 
+    (
+      uris = ['gs://v_bucket/*'],
+      format = 'PARQUET',
+      hive_partition_uri_prefix = 'gs://v_bucket/',
+      require_hive_partition_filter=false
+    );
+
+#QUERY CONFIGURATION
+sql_operations:
+  processing_location: NONE
+  sql_insert_temp_ext_to_temp: |
+      NONE
+  sql_check_dt_pr_exists : |
+      NONE
+  sql_insert: |
+    *
+  sql_delete: NONE
+  sql_prefix_query_table: |
+
+#SP BIGQUERY
+sp_operations:
+  sp_location: NONE
+  sp_dataset_id: NONE
+  sp_key_column: NONE
+  sp_validate_column: NONE
+  sp_validate_duplicate: NONE
+  sp_check_dependency: NONE
+  sp_validate_master_job: NONE
+  sp_datamart_name: NONE
+  sp_datamart_parameter: NONE
+  sp_check_data_retention : NONE
+  sp_data_cleansing_export : NONE
+  sp_delete_data_cleansing : NONE
+
+#STS JOB
+sts_operations:
+  sts_project_id: NONE
+  sts_job_name: NONE
+
+#AdditionalParameters
+additionalparam:
+  additionalparam1: NONE
+  additionalparam2: NONE
+  additionalparam3: NONE
+  additionalparam4: NONE
+  additionalparam5: NONE
+  additionalparam6: NONE
+  additionalparam7: NONE
+  additionalparam8: NONE
+  additionalparam9: NONE
+  additionalparam10: NONE

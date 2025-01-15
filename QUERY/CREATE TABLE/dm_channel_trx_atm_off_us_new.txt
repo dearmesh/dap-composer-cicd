@@ -1,0 +1,42 @@
+CREATE EXTERNAL TABLE `bd_tableau_dev.dm_channel_trx_atm_off_us_new`(
+  `channel` string, 
+  `trx_month` string, 
+  `trx_date` string, 
+  `trx_time` string, 
+  `cif_no` string, 
+  `account_no` string, 
+  `account_status` string, 
+  `product_code` string, 
+  `product_name` string, 
+  `lob` decimal(2,0), 
+  `card_no` string, 
+  `trx_type` string, 
+  `no_of_trx` tinyint, 
+  `amount` decimal(23,6), 
+  `terminal_id` string, 
+  `own_term` string, 
+  `location_1` string, 
+  `location_2` string, 
+  `city` string, 
+  `province` string, 
+  `to_account` string, 
+  `destination` string, 
+  `card_type` string, 
+  `result` string, 
+  `ecifref` string)
+PARTITIONED BY ( 
+  `date_pr` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://DNMUAT/warehouse/tablespace/external/hive/bd_tableau_dev.db/dm_channel_trx_atm_off_us_new'
+TBLPROPERTIES (
+  'bucketing_version'='2', 
+  'discover.partitions'='true', 
+  'last_modified_by'='talend', 
+  'last_modified_time'='1709104396', 
+  'transient_lastDdlTime'='1709104396')

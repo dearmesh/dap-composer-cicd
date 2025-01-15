@@ -1,0 +1,21 @@
+CREATE FUNCTION
+CREATE OR REPLACE FUNCTION `msig-life-trial.UDF.fuzzy_ratio`(a STRING, b STRING) RETURNS STRING LANGUAGE js
+OPTIONS (library=["gs://msig-life-trial/fuzzball.umd.min.js"]) AS R"""
+return fuzzball.ratio(a,b);
+""";
+
+CREATE OR REPLACE FUNCTION UDF.fuzzy_extract_one(a STRING, b ARRAY<STRING>) RETURNS STRING LANGUAGE js
+OPTIONS (library=["gs://bkt-composer-dags-dev-processing-dap/lib/fuzzball.umd.min.js"]) AS R"""
+return fuzzball.extract(a,b)[0][0];
+""";
+
+
+RUN FUNCTION 
+SELECT UDF.fuzzy_ratio("ADI PRATAMA","ADI PRATAM")
+
+
+SELECT UDF.fuzzy_extract_one('jony' 
+  -- , (SELECT ARRAY_AGG(name) 
+  --  FROM `fh-bigquery.popular_names.gender_probabilities`) 
+  , ['john', 'johnny', 'jonathan', 'jonas']
+)

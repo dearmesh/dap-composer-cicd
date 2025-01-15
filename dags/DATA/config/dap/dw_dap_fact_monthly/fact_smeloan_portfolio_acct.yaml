@@ -1,0 +1,212 @@
+#GCS FOLDER CONFIGURATION
+source_gcs_folder:
+  bucket: NONE
+  folder: NONE
+process_gcs_folder:
+  bucket: NONE
+  folder: NONE
+backup_gcs_folder:
+  bucket: NONE
+  folder: NONE
+duplicate_gcs_folder:
+  bucket: NONE
+  folder: NONE
+error_gcs_folder:
+  bucket: NONE
+  folder: NONE
+archive_gcs_folder:
+  bucket: NONE
+  folder: NONE
+
+#FILE FORMAT CONFIGURATION
+file_format:
+  file_type: NONE
+  header: NONE
+  delimiter: NONE
+  file_pattern: NONE
+  count_delimiter: NONE
+  retention_file_day: NONE
+  retention_table_day: NONE
+
+
+#BIG QUERY CONFIGURATION
+temp_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: NONE
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    NONE
+
+main_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: fact_smeloan_portfolio_acct
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    CREATE TABLE IF NOT EXISTS v_dataset_id.fact_smeloan_portfolio_acct
+    (
+      period string
+      , lob_code numeric
+      , cif string
+      , account_number string
+      , iso_currency_cd string
+      , acc_open_date date
+      , acc_close_date date
+      , fm_ori_acc_stat_cd string
+      , account_status string
+      , prod_grp_type string
+      , product_code_ncbs string
+      , product_desc string
+      , acc_flg_difi string
+      , acc_type_a string
+      , acc_type_b string
+      , data_source_a string
+      , data_source_b string
+      , credit_line_id string
+      , line_start_dt date
+      , line_maturity_dt date
+      , line_stat_cd string
+      , line_status string
+      , balance_idr numeric
+      , avbal_loan_idr numeric
+      , limit_plafon_idr numeric
+      , rate numeric
+      , amount_hold numeric
+      , collectibility numeric
+      , flg_funding_cust int64
+      , flg_lending_cust int64
+      , flg_both_fl_cust int64
+      , customer_type string
+      , flg_bpr string
+      , flg_kopkar string
+      , zip_code string
+      , business_segment string
+      , cust_birth_year int64
+      , cust_gender string
+      , cust_education string
+      , cust_profession string
+      , cust_income string
+      , homebrn_name string
+      , cust_religion string
+      , cust_marital string
+      , no_dependent int64
+      , flg_staff string
+      , mob int64
+      , mob_dbankpro int64
+      , acquisition_channel_level_1 string
+      , acquisition_channel_level_2 string
+      , acquisition_channel_level_3 string
+      , acquisition_channel_level_4 string
+      , off_cd_fm_no_rank string
+      , off_pos_fm_no_rank string
+      , brn_cd_fm_no_rank string
+      , brn_nm_fm_no_rank string
+      , region_fm_no_rank string
+      , off_cd_fm_highest_aum_on string
+      , off_pos_fm_highest_aum_on string
+      , brn_cd_fm_highest_aum_on string
+      , brn_nm_fm_highest_aum_on string
+      , region_fm_highest_aum_on string
+      , off_cd_gnrnew_highest_aum_on string
+      , off_pos_gnrnew_highest_aum_on string
+      , brn_cd_gnrnew_highest_aum_on string
+      , brn_nm_gnrnew_highest_aum_on string
+      , region_gnrnew_highest_aum_on string
+      , previous_month_segment_volume string
+      , previous_month_segment_flag string
+      , customer_segment_by_volume string
+      , customer_segment_by_flag string
+      , sum_neg_ca_osbal_idr numeric
+      , sum_mis_neg_avg_ca numeric
+      , sum_fin_neg_avg_ca numeric
+      , sum_pos_ca_osbal_idr numeric
+      , sum_mis_pos_avg_ca numeric
+      , sum_fin_pos_avg_ca numeric
+      , sum_neg_sa_osbal_idr numeric
+      , sum_mis_neg_avg_sa numeric
+      , sum_fin_neg_avg_sa numeric
+      , sum_pos_sa_osbal_idr numeric
+      , sum_mis_pos_avg_sa numeric
+      , sum_fin_pos_avg_sa numeric
+      , sum_osbal_td numeric
+      , sum_aum_off numeric
+      , have_active_dbankpro int64
+      , have_active_dcc int64
+      , execution_date date
+      , job_id string
+      , job_id_date_format datetime
+      , business_date date
+    )
+    PARTITION BY BUSINESS_DATE
+
+#QUERY CONFIGURATION
+sql_operations:
+  processing_location: NONE
+  sql_insert_temp_ext_to_temp: |
+      NONE
+  sql_check_dt_pr_exists : |
+      NONE
+  sql_insert: |
+    *
+  sql_delete: NONE
+  sql_prefix_query_table: |
+
+#SP BIGQUERY
+sp_operations:
+  sp_location: NONE
+  sp_dataset_id: NONE
+  sp_key_column: NONE
+  sp_validate_column: NONE
+  sp_validate_duplicate: NONE
+  sp_check_dependency: NONE
+  sp_validate_master_job: NONE
+  sp_datamart_name: NONE
+  sp_datamart_parameter: NONE
+  sp_check_data_retention : NONE
+  sp_data_cleansing_export : NONE
+  sp_delete_data_cleansing : NONE
+
+#STS JOB
+sts_operations:
+  sts_project_id: NONE
+  sts_job_name: NONE
+
+#AdditionalParameters
+additionalparam:
+  additionalparam1: NONE
+  additionalparam2: NONE
+  additionalparam3: NONE
+  additionalparam4: NONE
+  additionalparam5: NONE
+  additionalparam6: NONE
+  additionalparam7: NONE
+  additionalparam8: NONE
+  additionalparam9: NONE
+  additionalparam10: NONE

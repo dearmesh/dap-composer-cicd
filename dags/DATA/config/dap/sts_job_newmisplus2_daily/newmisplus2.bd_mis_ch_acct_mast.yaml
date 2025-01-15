@@ -1,0 +1,344 @@
+#GCS FOLDER CONFIGURATION
+source_gcs_folder:
+  bucket: NONE
+  folder: NONE
+process_gcs_folder:
+  bucket: NONE
+  folder: NONE
+backup_gcs_folder:
+  bucket: NONE
+  folder: NONE
+duplicate_gcs_folder:
+  bucket: NONE
+  folder: NONE
+error_gcs_folder:
+  bucket: NONE
+  folder: NONE
+archive_gcs_folder:
+  bucket: NONE
+  folder: NONE
+
+#FILE FORMAT CONFIGURATION
+file_format:
+  file_type: NONE
+  header: NONE
+  delimiter: NONE
+  file_pattern: NONE
+  count_delimiter: NONE
+  retention_file_day: NONE # 3 years
+  retention_table_day: NONE # 3 years
+
+
+#BIG QUERY CONFIGURATION
+temp_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: NONE
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    NONE
+
+main_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: bd_mis_ch_acct_mast
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    CREATE OR REPLACE EXTERNAL TABLE v_dataset_id.bd_mis_ch_acct_mast
+    (
+      cod_cc_brn	numeric,
+      cod_prod	numeric,
+      cod_acct_no	string,
+      cod_officr_id	string,
+      dat_acct_open	timestamp,
+      cod_acct_title	string,
+      cod_cust	numeric,
+      nam_cust_shrt	string,
+      nam_nominee	string,
+      cod_ccy	numeric,
+      cod_acct_stat	numeric,
+      cod_lang	string,
+      cod_tds	numeric,
+      bal_acct_min_reqd	numeric,
+      flg_joint_acct	string,
+      flg_adhoc_stmnt	string,
+      flg_stp_pmnt	string,
+      flg_si	string,
+      flg_swpout	string,
+      flg_idd_auth	string,
+      flg_tds	string,
+      flg_vat	string,
+      amt_exempt_limit	numeric,
+      flg_grp_bonus	string,
+      flg_atm	numeric,
+      ctr_int_sc_xfer	numeric,
+      cod_acct_no_grp_int	string,
+      cod_acct_no_grp_sc	string,
+      rat_var_cr_int	numeric,
+      ref_chq_no_lst_issd	string,
+      ref_chq_no_lst_used	string,
+      flg_special_stmnt	string,
+      flg_rest_acct	string,
+      flg_emp_acct	string,
+      flg_hold_mail	string,
+      flg_mail_add_ctrl	numeric,
+      flg_addtnl_adrs	string,
+      flg_memo	string,
+      flg_dr_auth	string,
+      flg_psbook	string,
+      amt_od_limit	numeric,
+      dat_st_uncl_advnc	timestamp,
+      amt_unclr_advnc_lim	numeric,
+      rat_unclr_advnc_pct	numeric,
+      dat_exp_unclr_advnc	timestamp,
+      ctr_days_od_curr	numeric,
+      ctr_days_od_mtd	numeric,
+      ctr_days_od_ytd	numeric,
+      ctr_days_od_lst_yr	numeric,
+      ctr_stmnt_copies	numeric,
+      ctr_day_stmnt_gen	numeric,
+      bal_book	numeric,
+      amt_unclr	numeric,
+      amt_auth_dr	numeric,
+      amt_hld	numeric,
+      bal_available	numeric,
+      amt_clr_today	numeric,
+      amt_dr_today	numeric,
+      amt_cr_today	numeric,
+      amt_dr_mtd	numeric,
+      amt_cr_mtd	numeric,
+      amt_dr_ytd	numeric,
+      amt_cr_ytd	numeric,
+      ctr_dr_today	numeric,
+      ctr_cr_today	numeric,
+      ctr_dr_mtd	numeric,
+      ctr_cr_mtd	numeric,
+      ctr_dr_ytd	numeric,
+      ctr_cr_ytd	numeric,
+      amt_last_dr	numeric,
+      dat_last_dr	timestamp,
+      amt_last_cr	numeric,
+      dat_last_cr	timestamp,
+      dat_last_stmnt	timestamp,
+      bal_last_stmnt	numeric,
+      bal_min_month	numeric,
+      ctr_ytd_stmnt_no	numeric,
+      ctr_num_withdraw	numeric,
+      ctr_num_chq_withdraw	numeric,
+      ctr_chq_reorder	numeric,
+      dat_last_int_cap	timestamp,
+      dat_last_sc_cap	timestamp,
+      amt_cr_int_accr_last_cap	numeric,
+      amt_dr_int_accr_last_cap	numeric,
+      amt_tax_accr	numeric,
+      amt_adb_product	numeric,
+      dat_last_int_comp	timestamp,
+      bal_last_int_cap	numeric,
+      amt_tot_dr	numeric,
+      amt_tot_cr	numeric,
+      bal_last_sc_cap	numeric,
+      dat_last_nsf	timestamp,
+      ctr_nsf_item_ytd	numeric,
+      ctr_nsf_item	numeric,
+      flg_int_waiver	string,
+      flg_sc_waiver	string,
+      flg_sc_waiver_cust	string,
+      bmp_sc_waiver	numeric,
+      cod_int_sc_acct_no	string,
+      amt_ytd_int_paid	numeric,
+      amt_ytd_int_recd	numeric,
+      amt_ytd_sc	numeric,
+      amt_dr_int_accr	numeric,
+      amt_cr_int_accr	numeric,
+      amt_dr_int_comp	numeric,
+      amt_cr_int_comp	numeric,
+      amt_last_cr_int_accr	numeric,
+      amt_last_dr_int_accr	numeric,
+      amt_bkdt_cr_int	numeric,
+      amt_bkdt_dr_int	numeric,
+      bp_line_sanction	numeric,
+      bp_line_utilized	numeric,
+      dat_bp_expiry	timestamp,
+      ctr_psbk_line_no	numeric,
+      bal_lst_psbk	numeric,
+      dat_lst_psbk_upd	timestamp,
+      cod_closer_id	string,
+      flg_acct_close	string,
+      flg_dorm_sc	string,
+      amt_sweepin_lien	numeric,
+      flg_sweepin	string,
+      ctr_days_overline_curr	numeric,
+      ctr_days_overline_mtd	numeric,
+      ctr_days_overline_ytd	numeric,
+      ctr_days_overline_lst_yr	numeric,
+      amt_periodic_product	numeric,
+      bal_previous	numeric,
+      flg_prev_bal_stat	string,
+      flg_mnt_status	string,
+      cod_mnt_action	string,
+      cod_last_mnt_makerid	string,
+      cod_last_mnt_chkrid	string,
+      dat_last_mnt	timestamp,
+      ctr_updat_srlno	numeric,
+      dat_recalled	timestamp,
+      dat_npl	timestamp,
+      times_overline_ytd	numeric,
+      ctr_funds_cr_today	numeric,
+      flg_status_recalled	string,
+      flg_status_securitized	string,
+      flg_status_conversion	string,
+      flg_status_legal	string,
+      flg_reminder_gen	string,
+      flg_accr_status	string,
+      limit_id	string,
+      acct_xfered_from	string,
+      flg_pdo_override	string,
+      flg_past_due_status	numeric,
+      amt_commit_fee	numeric,
+      amt_cum_od_limit	numeric,
+      amt_od_limit_prev	numeric,
+      ctr_tot_txns	numeric,
+      amt_instal	numeric,
+      dat_maturity	timestamp,
+      ctr_late_instal_remaining	numeric,
+      acct_term_days	numeric,
+      frq_instal	string,
+      rat_int_rd	numeric,
+      amt_rd_advance	numeric,
+      flg_repl_cube	string,
+      cod_line_no	string,
+      amt_maturity_value	numeric,
+      rat_penalty	numeric,
+      dat_last_penalty	timestamp,
+      grace_days	numeric,
+      flg_use_tiers_for_od	numeric,
+      flg_dr_int_src_changed	string,
+      bal_trading_min_reqd	numeric,
+      cod_cr_int_cap_basis	numeric,
+      cod_dr_int_cap_basis	numeric,
+      frq_cr_int_cap	string,
+      frq_dr_int_cap	string,
+      cr_int_cap_day	numeric,
+      dr_int_cap_day	numeric,
+      dat_last_cr_int_cap	timestamp,
+      dat_last_dr_int_cap	timestamp,
+      bal_last_cr_int_cap	numeric,
+      bal_last_dr_int_cap	numeric,
+      dat_next_cr_int_cap	timestamp,
+      dat_next_dr_int_cap	timestamp,
+      amt_cr_int_accr_adj	numeric,
+      amt_dr_int_accr_adj	numeric,
+      debit_confirmation_bal	numeric,
+      credit_confirmation_bal	numeric,
+      od_parent_limit_id	string,
+      ctr_chq_pur_ret	numeric,
+      dat_of_recovery	timestamp,
+      flg_rd_init_dep	string,
+      amt_rd_compd_int	numeric,
+      flg_cont_limit_level	string,
+      flg_interest_freeze	string,
+      cod_cust_minor_stat	numeric,
+      cod_acct_no_rd_drwdwn	string,
+      flg_allow_drwdwn	string,
+      ctr_retries	numeric,
+      dat_next_retry	timestamp,
+      dat_maturity_exec	timestamp,
+      cod_tds_2	numeric,
+      amt_tax_accr_2	numeric,
+      amt_exempt_limit_2	numeric,
+      cod_sc_pkg	string,
+      flg_disallow_brn	string,
+      flg_rat_change_advice	string,
+      rat_change_advice_lead_days	numeric,
+      amt_cr_rounding_difference	numeric,
+      amt_dr_rounding_difference	numeric,
+      cod_iban_no	string,
+      cod_aer	numeric,
+      cod_amt_unused_limit	numeric,
+      flg_stmnt	string,
+      flg_exclude_comb_stmnt	string,
+      cod_entity_vpd	numeric
+    )
+    WITH PARTITION COLUMNS 
+    (
+    date_pr string
+    )
+    WITH CONNECTION `v_connection`
+    OPTIONS 
+    (
+      uris = ['gs://v_bucket/*'],
+      format = 'PARQUET',
+      hive_partition_uri_prefix = 'gs://v_bucket/',
+      require_hive_partition_filter=false
+    );
+
+#QUERY CONFIGURATION
+sql_operations:
+  processing_location: NONE
+  sql_insert_temp_ext_to_temp: |
+      NONE
+  sql_check_dt_pr_exists : |
+      NONE
+  sql_insert: |
+    *
+  sql_delete: NONE
+  sql_prefix_query_table: |
+
+#SP BIGQUERY
+sp_operations:
+  sp_location: NONE
+  sp_dataset_id: NONE
+  sp_key_column: NONE
+  sp_validate_column: NONE
+  sp_validate_duplicate: NONE
+  sp_check_dependency: NONE
+  sp_validate_master_job: NONE
+  sp_datamart_name: NONE
+  sp_datamart_parameter: NONE
+  sp_check_data_retention : NONE
+  sp_data_cleansing_export : NONE
+  sp_delete_data_cleansing : NONE
+
+#STS JOB
+sts_operations:
+  sts_project_id: NONE
+  sts_job_name: NONE
+
+#AdditionalParameters
+additionalparam:
+  additionalparam1: NONE
+  additionalparam2: NONE
+  additionalparam3: NONE
+  additionalparam4: NONE
+  additionalparam5: NONE
+  additionalparam6: NONE
+  additionalparam7: NONE
+  additionalparam8: NONE
+  additionalparam9: NONE
+  additionalparam10: NONE

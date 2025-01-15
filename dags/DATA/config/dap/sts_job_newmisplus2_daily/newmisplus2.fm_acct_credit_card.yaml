@@ -1,0 +1,377 @@
+#GCS FOLDER CONFIGURATION
+source_gcs_folder:
+  bucket: NONE
+  folder: NONE
+process_gcs_folder:
+  bucket: NONE
+  folder: NONE
+backup_gcs_folder:
+  bucket: NONE
+  folder: NONE
+duplicate_gcs_folder:
+  bucket: NONE
+  folder: NONE
+error_gcs_folder:
+  bucket: NONE
+  folder: NONE
+archive_gcs_folder:
+  bucket: NONE
+  folder: NONE
+
+#FILE FORMAT CONFIGURATION
+file_format:
+  file_type: NONE
+  header: NONE
+  delimiter: NONE
+  file_pattern: NONE
+  count_delimiter: NONE
+  retention_file_day: NONE # 3 years
+  retention_table_day: NONE # 3 years
+
+
+#BIG QUERY CONFIGURATION
+temp_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: NONE
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    NONE
+
+main_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: fm_acct_credit_card
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    CREATE OR REPLACE EXTERNAL TABLE v_dataset_id.fm_acct_credit_card
+    WITH PARTITION COLUMNS 
+    (
+      load_timestamp timestamp
+      , identity_code numeric
+      , id_number numeric
+      , gl_account_id numeric
+      , org_unit_id numeric
+      , common_coa_id numeric
+      , as_of_date timestamp
+      , iso_currency_cd string
+      , identity_code_chg numeric
+      , account_age_c numeric
+      , account_age_mult_c string
+      , account_contrib numeric
+      , account_contrib_after_tax numeric
+      , account_group_cd numeric
+      , account_number string
+      , account_officer string
+      , accrual_basis_cd numeric
+      , accrued_interest numeric
+      , adjustable_type_cd numeric
+      , agent_bank_cd string
+      , allocated_equity numeric
+      , annual_acct_fee numeric
+      , annual_fee_cd string
+      , application_analyst_cd string
+      , application_final_score string
+      , application_score string
+      , appl_override_reason_cd string
+      , atm_exp numeric
+      , available_credit numeric
+      , avg_book_bal numeric
+      , avg_net_book_bal_c numeric
+      , bank_cd string
+      , behavior_score string
+      , bonus_amt numeric
+      , branch_cd string
+      , branch_platform_exp numeric
+      , branch_teller_exp numeric
+      , call_center_exp numeric
+      , cards_issued numeric
+      , cash_balance numeric
+      , cash_rate numeric
+      , charge_off_bal numeric
+      , charge_off_date timestamp
+      , charge_off_reason_cd string
+      , checking_acct_number string
+      , cif_key string
+      , compound_basis_cd numeric
+      , contrib_after_capital_chg numeric
+      , credit_bal_int_rate numeric
+      , credit_line numeric
+      , credit_score numeric
+      , credit_score_date timestamp
+      , credit_status_cd numeric
+      , current_fees numeric
+      , cur_book_bal numeric
+      , cur_credit_limit numeric
+      , cur_delq_bal numeric
+      , cur_gross_rate numeric
+      , cur_net_book_bal_c numeric
+      , cur_net_par_bal_c numeric
+      , cur_net_rate numeric
+      , cur_oas numeric
+      , cur_par_bal numeric
+      , cur_payment numeric
+      , cur_static_spread numeric
+      , cur_tp_per_adb numeric
+      , cur_yield numeric
+      , cwb_status_cd string
+      , cycle_day_of_month numeric
+      , data_processing_exp numeric
+      , data_source string
+      , deferred_org_bal numeric
+      , del_cur_days numeric
+      , del_life_times numeric
+      , del_year_times numeric
+      , disputed_transfer_bal numeric
+      , distribution_channel_cd string
+      , electronic_banking_exp numeric
+      , embedded_options_flg numeric
+      , equity_credit numeric
+      , expiration_date timestamp
+      , fee_charge_date timestamp
+      , finance_charge_bal numeric
+      , first_activated_date timestamp
+      , geographic_loc_cd numeric
+      , gross_fee_income numeric
+      , hedge_portfolio_set numeric
+      , high_bal numeric
+      , historic_oas numeric
+      , historic_static_spread numeric
+      , instrument_type_cd numeric
+      , interest_charge_credit numeric
+      , interest_inc_exp numeric
+      , interest_rate_cd numeric
+      , investor_nbr string
+      , item_processing_exp numeric
+      , joint_account_flg numeric
+      , largest_outst_bal numeric
+      , last_active_date timestamp
+      , last_cr_line_change_date timestamp
+      , last_payment_amt numeric
+      , last_payment_date timestamp
+      , last_rejected_date timestamp
+      , last_reprice_date timestamp
+      , last_status_change_date timestamp
+      , last_transaction_date timestamp
+      , last_update_date_c timestamp
+      , limit_use_ratio_c numeric
+      , loan_loss_provision numeric
+      , loan_loss_reserve numeric
+      , margin numeric
+      , margin_gross numeric
+      , margin_t_rate numeric
+      , market_segment_cd numeric
+      , market_value_c numeric
+      , matched_spread_c numeric
+      , maturity_date timestamp
+      , membership_anniv_date timestamp
+      , membership_exp numeric
+      , mercant_int_rate numeric
+      , merchandise_bal numeric
+      , merchandise_rate numeric
+      , neg_amrt_amt numeric
+      , neg_amrt_eq_date timestamp
+      , neg_amrt_eq_freq numeric
+      , neg_amrt_eq_mult string
+      , neg_amrt_limit numeric
+      , net_fee_income numeric
+      , net_int_margin numeric
+      , net_margin_cd numeric
+      , next_payment_date timestamp
+      , next_reprice_date timestamp
+      , open_account_flg numeric
+      , org_book_bal numeric
+      , org_market_value numeric
+      , org_net_book_bal_c numeric
+      , org_net_par_bal_c numeric
+      , org_par_bal numeric
+      , org_rate numeric
+      , original_credit_line numeric
+      , origination_date timestamp
+      , other_account_exp numeric
+      , other_processing_exp numeric
+      , over_limit_bal numeric
+      , over_limit_current_cycle numeric
+      , over_limit_lf_time numeric
+      , payment_history_cd string
+      , pay_ahead_cd string
+      , percent_sold numeric
+      , pmt_adjust_date timestamp
+      , pmt_chg_freq numeric
+      , pmt_chg_freq_mult string
+      , pmt_decr_cycle numeric
+      , pmt_decr_life numeric
+      , pmt_freq numeric
+      , pmt_freq_mult string
+      , pmt_incr_cycle numeric
+      , pmt_incr_life numeric
+      , prior_tp_per_adb numeric
+      , product_type_cd numeric
+      , purch_special_serv_charges numeric
+      , rate_cap_life numeric
+      , rate_chg_min numeric
+      , rate_chg_rnd_cd numeric
+      , rate_chg_rnd_fac numeric
+      , rate_decr_year numeric
+      , rate_floor_life numeric
+      , rate_incr_year numeric
+      , reason_closed_cd string
+      , record_count numeric
+      , remain_term_c numeric
+      , remain_term_mult_c string
+      , reprice_freq numeric
+      , reprice_freq_mult string
+      , reserve_charge_credit numeric
+      , retail_exp numeric
+      , return_items numeric
+      , return_on_equity numeric
+      , sales_channel string
+      , savings_acct_location string
+      , savings_acct_number string
+      , servicing_agent_cd numeric
+      , solicit_source_cd numeric
+      , special_payment_amt numeric
+      , tax_exempt_pct numeric
+      , tax_exp numeric
+      , teaser_end_date timestamp
+      , total_account_exp numeric
+      , total_charges numeric
+      , total_distribution_exp numeric
+      , total_fees numeric
+      , total_process_exp numeric
+      , total_transactions numeric
+      , transfer_bal_date timestamp
+      , transfer_rate numeric
+      , tran_rate_rem_term numeric
+      , t_rate_int_rate_cd numeric
+      , vip_account_flg numeric
+      , waived_fees numeric
+      , account_officer_cd string
+      , transfer_charge_credit numeric
+      , account_close_date timestamp
+      , bdi_gl_account_id_int_inc_exp numeric
+      , bdi_product_type_cd string
+      , net_int_inc numeric
+      , tp_coa_id numeric
+      , bdi_interest_inc_exp_idr numeric
+      , bdi_cur_book_bal_idr numeric
+      , bdi_net_int_inc_idr numeric
+      , bdi_transfer_charge_credit_idr numeric
+      , bdi_avg_book_bal_idr numeric
+      , bank_code string
+      , branch_code string
+      , sic_cd numeric
+      , amrt_term numeric
+      , amrt_term_mult string
+      , amrt_type_cd numeric
+      , deferred_cur_bal numeric
+      , int_type numeric
+      , lrd_balance numeric
+      , org_payment_amt numeric
+      , org_term numeric
+      , org_term_mult string
+      , rate_decr_cycle numeric
+      , rate_incr_cycle numeric
+      , rate_set_lag numeric
+      , rate_set_lag_mult string
+      , remain_no_pmts_c numeric
+      , issue_date timestamp
+      , bdi_rec_cur_book_bal numeric
+      , bdi_rec_iso_currency_cd string
+      , bdi_application_code numeric
+      , bdi_llp_position numeric
+      , bdi_llp_position_idr numeric
+      , bdi_tp_on_llp numeric
+      , bdi_recovery numeric
+      , bdi_recovery_idr numeric
+      , bdi_llp_expense numeric
+      , bdi_llp_expense_idr numeric
+      , bdi_liquidity_premium_rate numeric
+      , bdi_lob_xsell numeric
+      , bdi_llp_position_idr_imp numeric
+      , bdi_tp_on_llp_imp numeric
+      , bdi_llp_position_imp numeric
+      , is_joined int
+    )
+    (
+    date_pr string
+    )
+    WITH CONNECTION v_connection
+    OPTIONS 
+    (
+      uris = ['gs://v_bucket/*'],
+      format = 'PARQUET',
+      hive_partition_uri_prefix = 'gs://v_bucket/',
+      require_hive_partition_filter=false
+    );
+
+#QUERY CONFIGURATION
+sql_operations:
+  processing_location: NONE
+  sql_insert_temp_ext_to_temp: |
+      NONE
+  sql_check_dt_pr_exists : |
+      NONE
+  sql_insert: |
+    *
+  sql_delete: NONE
+  sql_prefix_query_table: |
+
+#SP BIGQUERY
+sp_operations:
+  sp_location: NONE
+  sp_dataset_id: NONE
+  sp_key_column: NONE
+  sp_validate_column: NONE
+  sp_validate_duplicate: NONE
+  sp_check_dependency: NONE
+  sp_validate_master_job: NONE
+  sp_datamart_name: NONE
+  sp_datamart_parameter: NONE
+  sp_check_data_retention : NONE
+  sp_data_cleansing_export : NONE
+  sp_delete_data_cleansing : NONE
+
+#STS JOB
+sts_operations:
+  sts_project_id: NONE
+  sts_job_name: NONE
+
+#AdditionalParameters
+additionalparam:
+  additionalparam1: NONE
+  additionalparam2: NONE
+  additionalparam3: NONE
+  additionalparam4: NONE
+  additionalparam5: NONE
+  additionalparam6: NONE
+  additionalparam7: NONE
+  additionalparam8: NONE
+  additionalparam9: NONE
+  additionalparam10: NONE

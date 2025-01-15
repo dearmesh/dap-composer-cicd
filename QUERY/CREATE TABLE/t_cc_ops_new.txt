@@ -1,0 +1,37 @@
+CREATE EXTERNAL TABLE `bd_tableau_dev.t_cc_ops_new`(
+  `ops_mord_card_nbr` string, 
+  `ops_mord_basic_card` string, 
+  `crdacct` string, 
+  `cdtype` string, 
+  `ops_mord_delivery_date` decimal(10,0), 
+  `ops_mord_pgm_code` string, 
+  `ops_mord_instl_plan` string, 
+  `ops_mord_nbr_inst_bill` decimal(22,0), 
+  `ops_mord_amt` decimal(22,2), 
+  `ops_mord_earm_amt` decimal(22,2), 
+  `ops_mord_handling_fee` decimal(22,2), 
+  `ops_mord_int_rate` decimal(22,4), 
+  `ops_mord_int_total` decimal(22,2), 
+  `tenor` int, 
+  `ops_mord_desc` string, 
+  `ops_mord_ref` decimal(22,0), 
+  `ops_mord_auth_code` string, 
+  `typ` string, 
+  `principal` string, 
+  `acctcust` string)
+PARTITIONED BY ( 
+  `date_pr` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://DNMUAT/warehouse/tablespace/external/hive/bd_tableau_dev.db/t_cc_ops_new'
+TBLPROPERTIES (
+  'bucketing_version'='2', 
+  'discover.partitions'='true', 
+  'last_modified_by'='00119839', 
+  'last_modified_time'='1716949859', 
+  'transient_lastDdlTime'='1716949859')

@@ -1,0 +1,184 @@
+#GCS FOLDER CONFIGURATION
+source_gcs_folder:
+  bucket: NONE
+  folder: NONE
+process_gcs_folder:
+  bucket: NONE
+  folder: NONE
+backup_gcs_folder:
+  bucket: NONE
+  folder: NONE
+duplicate_gcs_folder:
+  bucket: NONE
+  folder: NONE
+error_gcs_folder:
+  bucket: NONE
+  folder: NONE
+archive_gcs_folder:
+  bucket: NONE
+  folder: NONE
+
+#FILE FORMAT CONFIGURATION
+file_format:
+  file_type: NONE
+  header: NONE
+  delimiter: NONE
+  file_pattern: NONE
+  count_delimiter: NONE
+  retention_file_day: NONE # 3 years
+  retention_table_day: NONE # 3 years
+
+
+#BIG QUERY CONFIGURATION
+temp_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: NONE
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    NONE
+
+main_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: t_mld
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    CREATE OR REPLACE EXTERNAL TABLE v_dataset_id.t_mld
+    (
+     id_no numeric, 
+     no numeric, 
+     cif_no_1 string, 
+     cif_no_2 string, 
+     customer_name string, 
+     source_of_fund numeric, 
+     risk_profile string, 
+     ccy string, 
+     trade_date timestamp, 
+     placement_amount numeric, 
+     checklist_blokir_account_as_per_nominal_placement string, 
+     nip_certified_marketing string, 
+     sales_code string, 
+     branch_code string, 
+     branch_name string, 
+     region string, 
+     total_interest_payment_gross numeric, 
+     total_interest_after_tax numeric, 
+     pi_after_tax numeric, 
+     minimum_interest_payment_gross numeric, 
+     wht_on_min_interest numeric, 
+     min_interest_after_tax numeric, 
+     additional_payout_gross numeric, 
+     wht_on_payout numeric, 
+     net_payout_after_tax numeric, 
+     check_formula_pi_after_tax numeric, 
+     total_bdi_paid_to_counterparty_trader_flat numeric, 
+     profit numeric, 
+     daily_accrual numeric, 
+     termination_date timestamp, 
+     outstanding_of_days timestamp, 
+     penalty_amount_to_client timestamp, 
+     deposit_no string, 
+     summit_deal string, 
+     tanggal_pemesanan timestamp, 
+     value_date timestamp, 
+     maturity_date timestamp, 
+     ori_rate numeric, 
+     usd_rate numeric, 
+     lob numeric, 
+     vol_in_idr numeric, 
+     rev_in_idr numeric, 
+     vol_in_usd numeric, 
+     rev_in_usd numeric, 
+     region2 string, 
+     oc_final string, 
+     bm_code string, 
+     am_code string, 
+     is_code string, 
+     branch_code_2 int64, 
+     nti_flag string, 
+     nti_prod string
+    )
+    WITH PARTITION COLUMNS 
+    (
+    date_pr string
+    )
+    WITH CONNECTION `v_connection`
+    OPTIONS 
+    (
+      uris = ['gs://v_bucket/*'],
+      format = 'PARQUET',
+      hive_partition_uri_prefix = 'gs://v_bucket/',
+      require_hive_partition_filter=false
+    );
+
+#QUERY CONFIGURATION
+sql_operations:
+  processing_location: NONE
+  sql_insert_temp_ext_to_temp: |
+      NONE
+  sql_check_dt_pr_exists : |
+      NONE
+  sql_insert: |
+    *
+  sql_delete: NONE
+  sql_prefix_query_table: |
+
+#SP BIGQUERY
+sp_operations:
+  sp_location: NONE
+  sp_dataset_id: NONE
+  sp_key_column: NONE
+  sp_validate_column: NONE
+  sp_validate_duplicate: NONE
+  sp_check_dependency: NONE
+  sp_validate_master_job: NONE
+  sp_datamart_name: NONE
+  sp_datamart_parameter: NONE
+  sp_check_data_retention : NONE
+  sp_data_cleansing_export : NONE
+  sp_delete_data_cleansing : NONE
+
+#STS JOB
+sts_operations:
+  sts_project_id: NONE
+  sts_job_name: NONE
+
+#AdditionalParameters
+additionalparam:
+  additionalparam1: NONE
+  additionalparam2: NONE
+  additionalparam3: NONE
+  additionalparam4: NONE
+  additionalparam5: NONE
+  additionalparam6: NONE
+  additionalparam7: NONE
+  additionalparam8: NONE
+  additionalparam9: NONE
+  additionalparam10: NONE

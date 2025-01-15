@@ -1,0 +1,194 @@
+#GCS FOLDER CONFIGURATION
+source_gcs_folder:
+  bucket: NONE
+  folder: NONE
+process_gcs_folder:
+  bucket: NONE
+  folder: NONE
+backup_gcs_folder:
+  bucket: NONE
+  folder: NONE
+duplicate_gcs_folder:
+  bucket: NONE
+  folder: NONE
+error_gcs_folder:
+  bucket: NONE
+  folder: NONE
+archive_gcs_folder:
+  bucket: NONE
+  folder: NONE
+
+#FILE FORMAT CONFIGURATION
+file_format:
+  file_type: NONE
+  header: NONE
+  delimiter: NONE
+  file_pattern: NONE
+  count_delimiter: NONE
+  retention_file_day: NONE # 3 years
+  retention_table_day: NONE # 3 years
+
+
+#BIG QUERY CONFIGURATION
+temp_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: NONE
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    NONE
+
+main_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: dm_casa_funding
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    CREATE OR REPLACE EXTERNAL TABLE v_dataset_id.dm_casa_funding
+    (
+      cif	numeric,
+      ecif	string,
+      cust_flag	string,
+      customer_segment	string,
+      cod_acct_no	string,
+      cod_acct_relation	string,
+      dat_cust_open	timestamp,
+      acct_open_dt	timestamp,
+      acct_status_code	numeric,
+      acct_status_name	string,
+      acct_status_group	string,
+      start_status_date	date,
+      acct_ccy_code	numeric,
+      acct_ccy_name	string,
+      lob_code	numeric,
+      lob_name	string,
+      lob_name_group	string,
+      lob_group2	string,
+      acct_branch_code	numeric,
+      acct_branch_name	string,
+      cod_ao_business	string,
+      cod_ao_operation	string,
+      account_snd	string,
+      prod_code	numeric,
+      prod_name	string,
+      prod_group_level	string,
+      prod_group_level_1	string,
+      prod_group_level_2	string,
+      syariah_flag	int,
+      idr_flag	int,
+      throughput	string,
+      snd_com_by_lob	string,
+      region_by_ao	string,
+      flaglastmonth	string,
+      cabang_general_funding	string,
+      conv_rate	numeric,
+      balance_ori	numeric,
+      balance_idr	numeric,
+      mis_average_balance_ori	numeric,
+      fin_average_balance_ori	numeric,
+      mis_average_balance_idr	numeric,
+      fin_average_balance_idr	numeric,
+      amt_hld	numeric,
+      bal_acct_min_reqd	numeric,
+      txt_822	string,
+      txt_823	string,
+      txt_825	string,
+      txt_826	string,
+      off_code	string,
+      dat_acct_close	timestamp,
+      dat_maturity	timestamp,
+      amt_instal	numeric,
+      ntb_flag	string,
+      ntb_date	timestamp,
+      ntp_date	timestamp,
+      funded_flag	int,
+      acquisition_channel_level_1	string,
+      acquisition_channel_level_2	string,
+      acquisition_channel_level_3	string,
+      acquisition_channel_level_4	string,
+      avg_bal_daily	numeric,
+      avg_bal_daily_fm	numeric
+    )
+    WITH PARTITION COLUMNS 
+    (
+    date_pr string
+    )
+    WITH CONNECTION `v_connection`
+    OPTIONS 
+    (
+      uris = ['gs://v_bucket/*'],
+      format = 'PARQUET',
+      hive_partition_uri_prefix = 'gs://v_bucket/',
+      require_hive_partition_filter=false
+    );
+
+#QUERY CONFIGURATION
+sql_operations:
+  processing_location: NONE
+  sql_insert_temp_ext_to_temp: |
+      NONE
+  sql_check_dt_pr_exists : |
+      NONE
+  sql_insert: |
+    *
+  sql_delete: NONE
+  sql_prefix_query_table: |
+
+#SP BIGQUERY
+sp_operations:
+  sp_location: NONE
+  sp_dataset_id: NONE
+  sp_key_column: NONE
+  sp_validate_column: NONE
+  sp_validate_duplicate: NONE
+  sp_check_dependency: NONE
+  sp_validate_master_job: NONE
+  sp_datamart_name: NONE
+  sp_datamart_parameter: NONE
+  sp_check_data_retention : NONE
+  sp_data_cleansing_export : NONE
+  sp_delete_data_cleansing : NONE
+
+#STS JOB
+sts_operations:
+  sts_project_id: NONE
+  sts_job_name: NONE
+
+#AdditionalParameters
+additionalparam:
+  additionalparam1: NONE
+  additionalparam2: NONE
+  additionalparam3: NONE
+  additionalparam4: NONE
+  additionalparam5: NONE
+  additionalparam6: NONE
+  additionalparam7: NONE
+  additionalparam8: NONE
+  additionalparam9: NONE
+  additionalparam10: NONE

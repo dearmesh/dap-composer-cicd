@@ -1,0 +1,23 @@
+CREATE EXTERNAL TABLE `bd_tableau_dev.lu_bank`(
+  `cod_bank` string, 
+  `cod_sw_bank` string, 
+  `nam_bank` string, 
+  `nam_bank_alias` string)
+PARTITIONED BY ( 
+  `date_pr` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='\;', 
+  'serialization.format'='\;') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://DNMUAT/user/hive/warehouse/bd_tableau_dev.db/lu_bank'
+TBLPROPERTIES (
+  'STATS_GENERATED_VIA_STATS_TASK'='true', 
+  'last_modified_by'='talend', 
+  'last_modified_time'='1675924034', 
+  'transient_lastDdlTime'='1675924034')

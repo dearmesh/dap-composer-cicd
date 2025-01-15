@@ -1,0 +1,91 @@
+--------- TAHAP2 DEVELOPMENT YANG SUDAH DILAKUKAN --------------------
+2024-11-06
+1. Create Dataset
+2. Create Table OMT
+3. Create Connection Biglake
+4. Tambahkan SA connection di Project landing dengan Role Storage Viewer
+5. Put Library FuzzBall di GCS
+6. Compile script UDF
+7. Enable STS API di project Processing --> ini harusnya INFRA
+8. Install apache-airflow-providers-amazon == 9.0.0 
+9. Enable  Data lineage API di project processing
+
+
+2024-11-07
+1. Create Dataset semua 
+2. Import-import Variable Global Composer
+3. 
+
+2024-12-02
+1. Template Datamart Done
+
+2024-12-08
+1. Pembuatan dataset dm_dap di Project sandbox
+2. 
+
+
+
+--=======================
+Pendingan Belum Done:
+--======================
+4. Job email (Butuh SMTP) Email Alert on Failure 
+15. terkait dengan validasi checksum di SIT atau UAT nanti, kan di job composer ada bagian delete file gcs yang date_pr nya 3 tahun ya. Nah bayangin klo di Cloudera ada data date_pr yang lebih dari 3 tahun  , trus di compare sama yang gcs yang cuma 3 tahun. Carefull disini perlu ada justifikasi dan proofing yang kuat.
+17. Sensor STS untuk retention retry dan waktunya segala macemnya masih di hardcode di Function. Perlu di percantik.
+22. TSD job composer, semuanya validate_master_job pindah di depan get_variable_omt_master_job
+24. Business Glossary harus mulai di conduct ke pak Nico / Deni -> Coba MII buat dulu, nanti di konfirm ke pak Nico dan Team Data Governance
+25. Senin omongin masalah Security di Team DE based on FSD
+26. Senin omongin masalah RTM SIT Script ama pak Romi.
+30. TSD bagian main python : validate_enable_flag_and_duplicate_run & delete_omt_error perlu di update , ada logic berubah dikit
+31. TSD bagian function python : validate_enable_flag_and_duplicate_run & delete_omt_error perlu di update , ada logic berubah dikit
+32. TSD di bagian Store Procedure list, tambahin 1 kolom yang mnegacu pada appendix nya. untuk isi dari SP nya.
+33. TSD bagian insert omt running yang backlog, yang job runnning, di cek karena ada penambahan case when di business date nya
+34. Explore RBAC untuk external table
+35. 
+36. 
+
+Job Datamart Composer kurang Dataform (*optional)
+
+-=======================
+Pendingan Sudah Done:
+-========================
+1. Sensor STS -> done , buat function sendiri pake sts hook
+2. STS delete yang staging gak jelas -> Done
+3. STS xcom hanya folder total dan ini dari sensor (klo mau coba harus explore cloud logging) -> Done hanya bisa file yang diketahui delta dan file yang berhasil di ingest
+5. Datamart kurang proses demotion with masking ke sandbox -> Done
+6. Script dari pake Nico (Done 4/4)
+7. Dm python kurang Housekeeping data -> Done Harus di test
+8. Error Handling On Failure Callback masih belum -> Done Harus di test
+9. AutofillBacklog insert only sebaiknya pake konsep cross join aja, trus insert 1 kali -> Done
+10. STS job omposer create table, harusnya dibagian belakang, karena klo create external table tapi gak ada file nya, itu bakalan error. -> Done
+11. Update TSD bagian STS job composer, create table pindah setelah move file to backup (Done)
+12 Update TSD bagian Function, branch_validate_enable_flag_and_duplicate_run, karena return nya berubah (Done)
+13. List Yaml di TSD perlu di cek lagi, karena di list berdasarkan yang udah dibuat di Folder GCS (Done, plus ada tambahan 4 table untuk newmisplus2)
+14. Perlu ada validasi dari setiap Xcom yang di get di task get_variable_omt_master_job.. karena ada kasus bahwa task nya done, tapi load xcom nya error. -> Done, ini aman2 aja sebnernya, load xcom terlihat error cuma karena kolomnya memang null di omt master job
+16 Type Conversion Timestamp gak bisa ke Datetime , harus tetep di Timestamp, update TSD (Done)
+18. TSD Job function kurang bagian definisi dengan bahasa kita sendiri tujuannya buat apa. -> Done
+19. TSD tambahin AIRFLOW_VAR_DAP_SANDBOX_PROJECT_ID (Done)
+20. TSD harus ditambahin bagian job composer yang HouseKeeping logic nya. -> Done
+21. TSD harus ditambahin bagian job composer yang Sandbox logic nya. -> Done
+23. TSD tambahin type conversion yang BOOL -> Done
+27. ada Permintaan Pak Manto untuk Validasi rerun cukup dari omt master job saja. tapi klo di rerun otomatis hapus execution date biar omt process log bersih. -> Done
+28. Perlu sync ama DLH terkait table omt -> Done DLH tidak mau mengikuti design DAP walaupun sebelumnya kita sudah deal untuk menyamakan table nya
+29. TSD bagian Validate Master Job SP perlu di update, ada logic tambahan -> Done
+
+
+
+----=====================================================================================
+Catetan Table DEV untuk SIT
+---======================================================================================
+1. dmu_workspace.unit_link_bi -> ada file kotor harus dihapus.
+2. bd_tableau.investment_mt_fund -> ada cacad file .deflat di date_pr 20230930 harus dihapus.
+3. bd_tableau.bancassurance -> date_pr=20231112, 20231128 cuma 72 kolom( Table 73 kolom) harus dihapus.
+4. bd_tableau.lu_bank -> date_pr=20200925 , 20200923 , 20200924 cuma 3 kolom (table 4 kolom) harus dihapus.
+
+
+--=====================
+Catetan table DW DM_STG dan Dm
+--==================================
+1. fact_smeloan_acct_portfolio
+    - di bagian step2 cust_level_dtl_c , tidak ada kolom mob dari table dm_customer_profile_general_new
+    - 
+

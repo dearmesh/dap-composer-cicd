@@ -1,0 +1,209 @@
+#GCS FOLDER CONFIGURATION
+source_gcs_folder:
+  bucket: NONE
+  folder: NONE
+process_gcs_folder:
+  bucket: NONE
+  folder: NONE
+backup_gcs_folder:
+  bucket: NONE
+  folder: NONE
+duplicate_gcs_folder:
+  bucket: NONE
+  folder: NONE
+error_gcs_folder:
+  bucket: NONE
+  folder: NONE
+archive_gcs_folder:
+  bucket: NONE
+  folder: NONE
+
+#FILE FORMAT CONFIGURATION
+file_format:
+  file_type: NONE
+  header: NONE
+  delimiter: NONE
+  file_pattern: NONE
+  count_delimiter: NONE
+  retention_file_day: NONE # 3 years
+  retention_table_day: NONE # 3 years
+
+
+#BIG QUERY CONFIGURATION
+temp_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: NONE
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    NONE
+
+main_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: bancassurance   ## INI JANGAN DI PINDAHIN atau jadi NONE
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: | ## INI JANGAN DI PINDAHIN atau jadi NONE
+    CREATE OR REPLACE EXTERNAL TABLE v_dataset_id.bancassurance
+    (
+      dat_last_mnt string
+      , cif string
+      , cust_name string
+      , cust_open_dt string
+      , cust_sex string
+      , cust_ethnic string
+      , cust_education string
+      , cust_profession string
+      , cust_marital string
+      , cust_state_address string
+      , cust_income string
+      , cust_type string
+      , cust_branch_code string
+      , cust_branch_name string
+      , cust_snd string
+      , cust_relation string
+      , cust_zip string
+      , cust_date_of_birth string
+      , flag_noa string
+      , cod_acct_no_rd_drwdwn string
+      , ins_acct_no string
+      , acct_no_rd string
+      , acct_no string
+      , acct_name string
+      , acct_open_dt string
+      , acct_close_dt string
+      , acct_status_code string
+      , acct_status_name string
+      , acct_ccy_code string
+      , acct_ccy_name string
+      , lob_cod string
+      , lob_name string
+      , lob_name_group string
+      , lob_group_2 string
+      , acct_branch_code string
+      , branch_type string
+      , acct_branch_name string
+      , acct_officer_bis string
+      , acct_officer_bis_name string
+      , acct_officer_opr string
+      , acct_officer_opr_name string
+      , acct_snd string
+      , prod_code string
+      , prod_name string
+      , flagsyariah string
+      , dealer_no string
+      , dealer_name string
+      , dealer_name_2 string
+      , status_code string
+      , term_code string
+      , flg_mnt_status string
+      , first_post_dt string
+      , last_post_dt string
+      , online_status string
+      , amt_install float64 
+      , amt_paid float64 
+      , payment_counter int
+      , effective_dt string
+      , expiry_dt string
+      , am_code string
+      , am_name string
+      , past_due int
+      , region_by_ao string
+      , fb_income float64 
+      , ispdmt float64 
+      , region_oc string
+      , am_name_oc string
+      , branch_code_oc string
+      , branch_name_oc string
+      , nip_oc string
+      , position_oc string
+      , off_name_oc string
+      , am_code_oc string
+      , ecifref string
+    )
+    WITH PARTITION COLUMNS 
+    (
+    date_pr string
+    )
+    WITH CONNECTION `v_connection`
+    OPTIONS 
+    (
+      uris = ['gs://v_bucket/*'],
+      format = 'CSV',
+      field_delimiter = '\x01',
+      null_marker = '\\N',
+      hive_partition_uri_prefix = 'gs://v_bucket/',
+      require_hive_partition_filter=false,
+      quote = ""
+    );
+
+#QUERY CONFIGURATION
+sql_operations:
+  processing_location: NONE
+  sql_insert_temp_ext_to_temp: |
+      NONE
+  sql_check_dt_pr_exists : |
+      NONE
+  sql_insert: |
+    *
+  sql_delete: NONE
+  sql_prefix_query_table: |
+
+#SP BIGQUERY
+sp_operations:
+  sp_location: NONE
+  sp_dataset_id: NONE
+  sp_key_column: NONE
+  sp_validate_column: NONE
+  sp_validate_duplicate: NONE
+  sp_check_dependency: NONE
+  sp_validate_master_job: NONE
+  sp_datamart_name: NONE
+  sp_datamart_parameter: NONE
+  sp_check_data_retention : NONE
+  sp_data_cleansing_export : NONE
+  sp_delete_data_cleansing : NONE
+
+#STS JOB
+sts_operations:
+  sts_project_id: NONE
+  sts_job_name: NONE
+
+#AdditionalParameters
+additionalparam:
+  additionalparam1: NONE
+  additionalparam2: NONE
+  additionalparam3: NONE
+  additionalparam4: NONE
+  additionalparam5: NONE
+  additionalparam6: NONE
+  additionalparam7: NONE
+  additionalparam8: NONE
+  additionalparam9: NONE
+  additionalparam10: NONE

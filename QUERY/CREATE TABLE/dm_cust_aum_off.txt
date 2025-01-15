@@ -1,0 +1,23 @@
+CREATE EXTERNAL TABLE `dmu_workspace.dm_cust_aum_off`(
+  `cif` decimal(22,0), 
+  `os_bal_mf` decimal(22,2), 
+  `os_bal_ba` decimal(22,2))
+PARTITIONED BY ( 
+  `date_pr` string)
+ROW FORMAT SERDE 
+  'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe' 
+WITH SERDEPROPERTIES ( 
+  'field.delim'='^', 
+  'line.delim'='\n', 
+  'serialization.format'='^') 
+STORED AS INPUTFORMAT 
+  'org.apache.hadoop.mapred.TextInputFormat' 
+OUTPUTFORMAT 
+  'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
+LOCATION
+  'hdfs://DNMUAT/user/hive/warehouse/dmu_workspace.db/dm_cust_aum_off'
+TBLPROPERTIES (
+  'bucketing_version'='2', 
+  'discover.partitions'='true', 
+  'skip.header.line.count'='1', 
+  'transient_lastDdlTime'='1696233592')

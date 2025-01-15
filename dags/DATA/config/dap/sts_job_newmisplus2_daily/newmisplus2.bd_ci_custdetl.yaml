@@ -1,0 +1,209 @@
+#GCS FOLDER CONFIGURATION
+source_gcs_folder:
+  bucket: NONE
+  folder: NONE
+process_gcs_folder:
+  bucket: NONE
+  folder: NONE
+backup_gcs_folder:
+  bucket: NONE
+  folder: NONE
+duplicate_gcs_folder:
+  bucket: NONE
+  folder: NONE
+error_gcs_folder:
+  bucket: NONE
+  folder: NONE
+archive_gcs_folder:
+  bucket: NONE
+  folder: NONE
+
+#FILE FORMAT CONFIGURATION
+file_format:
+  file_type: NONE
+  header: NONE
+  delimiter: NONE
+  file_pattern: NONE
+  count_delimiter: NONE
+  retention_file_day: NONE # 3 years
+  retention_table_day: NONE # 3 years
+
+
+#BIG QUERY CONFIGURATION
+temp_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: NONE
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    NONE
+
+main_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: bd_ci_custdetl
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    CREATE OR REPLACE EXTERNAL TABLE v_dataset_id.bd_ci_custdetl
+    (
+       cod_cust_id numeric
+      , txt_cust_occuptn string 
+      , txt_occuptn_cat numeric 
+      , txt_designation string 
+      , txt_tenr_occuptn numeric 
+      , nam_spouse_cust string 
+      , dat_marriage timestamp 
+      , dat_dob_spouse timestamp 
+      , nam_spo_employer string 
+      , cod_natl_id_spouse string 
+      , txt_occpn_spouse numeric 
+      , txt_addr1_spo_emp string 
+      , txt_addr2_spo_emp string 
+      , txt_addr3_spo_emp string 
+      , ref_spo_emp_phone string 
+      , txt_spo_desgn string 
+      , nam_cust_emp string 
+      , txt_empadr_add1 string 
+      , txt_empadr_add2 string 
+      , txt_empadr_add3 string 
+      , nam_empadr_city string 
+      , nam_empadr_state string 
+      , nam_empadr_cntry string 
+      , txt_empadr_zip string 
+      , ref_cust_emp_phone string 
+      , ref_cust_emp_telex string 
+      , ref_cust_emp_fax string 
+      , ctr_yrs_job numeric 
+      , ctr_age_retire numeric 
+      , amt_cust_income numeric 
+      , amt_oth_income numeric 
+      , amt_rent_exp numeric 
+      , amt_insu_exp numeric 
+      , amt_oth_expense numeric 
+      , nam_prev_emp string 
+      , txt_desgn_prevjob string 
+      , txt_rsn_left_job string 
+      , amt_last_sal numeric 
+      , dat_from_prevjob timestamp 
+      , dat_to_prevjob timestamp 
+      , ref_cust_pspt string 
+      , dat_pspt_issue timestamp 
+      , dat_pspt_expiry timestamp 
+      , ref_visa string 
+      , txt_typ_visa string 
+      , ctr_durtn_stay numeric
+      , dat_visa_expiry timestamp 
+      , txt_med_hist string 
+      , txt_med_ins string 
+      , flg_lgl_case string 
+      , txt_lgl_case string 
+      , txt_police_recrd string 
+      , amt_val_house numeric 
+      , txt_mort_assts string 
+      , txt_val_mort string 
+      , txt_cr_rating string 
+      , dat_cr_rating timestamp 
+      , nam_cr_card1 string 
+      , ref_cr_card1 string 
+      , nam_cr_card2 string 
+      , ref_cr_card2 string 
+      , nam_cr_card3 string 
+      , ref_cr_card3 string 
+      , flg_mnt_status string 
+      , cod_mnt_action string 
+      , cod_last_mnt_makerid string 
+      , cod_last_mnt_chkrid string 
+      , dat_last_mnt timestamp 
+      , ctr_updat_srlno numeric
+      , ref_cust_emp_phone_country string 
+      , ref_cust_emp_phone_area string 
+      , ref_cust_emp_phone_extn string 
+      , ref_cust_emp_fax_country string 
+      , ref_cust_emp_fax_area string 
+      , ref_cust_emp_mobile string 
+      , ref_cust_emp_email string 
+      , cod_entity_vpd numeric
+    )
+    WITH PARTITION COLUMNS 
+    (
+    date_pr string
+    )
+    WITH CONNECTION v_connection
+    OPTIONS 
+    (
+      uris = ['gs://v_bucket/*'],
+      format = 'PARQUET',
+      hive_partition_uri_prefix = 'gs://v_bucket/',
+      require_hive_partition_filter=false
+    );
+
+#QUERY CONFIGURATION
+sql_operations:
+  processing_location: NONE
+  sql_insert_temp_ext_to_temp: |
+      NONE
+  sql_check_dt_pr_exists : |
+      NONE
+  sql_insert: |
+    *
+  sql_delete: NONE
+  sql_prefix_query_table: |
+
+#SP BIGQUERY
+sp_operations:
+  sp_location: NONE
+  sp_dataset_id: NONE
+  sp_key_column: NONE
+  sp_validate_column: NONE
+  sp_validate_duplicate: NONE
+  sp_check_dependency: NONE
+  sp_validate_master_job: NONE
+  sp_datamart_name: NONE
+  sp_datamart_parameter: NONE
+  sp_check_data_retention : NONE
+  sp_data_cleansing_export : NONE
+  sp_delete_data_cleansing : NONE
+
+#STS JOB
+sts_operations:
+  sts_project_id: NONE
+  sts_job_name: NONE
+
+#AdditionalParameters
+additionalparam:
+  additionalparam1: NONE
+  additionalparam2: NONE
+  additionalparam3: NONE
+  additionalparam4: NONE
+  additionalparam5: NONE
+  additionalparam6: NONE
+  additionalparam7: NONE
+  additionalparam8: NONE
+  additionalparam9: NONE
+  additionalparam10: NONE

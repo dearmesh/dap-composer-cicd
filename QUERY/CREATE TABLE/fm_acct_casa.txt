@@ -1,0 +1,75 @@
+1	CREATE EXTERNAL TABLE `newmisplus2_dev.fm_acct_casa`(
+2	  `load_timestamp` timestamp, 
+3	  `as_of_date` timestamp, 
+4	  `account_number` string, 
+5	  `cif_key` string, 
+6	  `iso_currency_cd` string, 
+7	  `product_cd` decimal(5,0), 
+8	  `product_typ` string, 
+9	  `gl_account_id` decimal(14,0), 
+10	  `bdi_gl_account_id_int_inc_exp` decimal(14,0), 
+11	  `lob_code` decimal(18,4), 
+12	  `ao_business` string, 
+13	  `ao_operation` string, 
+14	  `branch_cd` decimal(10,0), 
+15	  `account_open_date` timestamp, 
+16	  `value_date` timestamp, 
+17	  `cur_net_rate` decimal(24,4), 
+18	  `account_status` decimal(3,0), 
+19	  `cross_sell` string, 
+20	  `value_chain` string, 
+21	  `balance_ori` decimal(24,4), 
+22	  `balance_idr` decimal(24,4), 
+23	  `maturity_date` timestamp, 
+24	  `new_to_bank` string, 
+25	  `new_to_product` string, 
+26	  `region` decimal(3,0), 
+27	  `account_close_date` timestamp, 
+28	  `program` string, 
+29	  `liquidity_premium` decimal(20,0), 
+30	  `source_data` string, 
+31	  `credit_line_id` string, 
+32	  `line_start_date` timestamp, 
+33	  `line_status` string, 
+34	  `limit_plafon_ori` decimal(24,2), 
+35	  `limit_plafon_idr` decimal(24,2), 
+36	  `cust_name` string, 
+37	  `remark4` string, 
+38	  `remark5` string, 
+39	  `product_code_ncbs` string, 
+40	  `product_desc` string, 
+41	  `branch_description` string, 
+42	  `branch_regional` decimal(3,0), 
+43	  `business_seg_cat` decimal(6,0), 
+44	  `business_seg_typ` string, 
+45	  `rat_variance` decimal(18,4), 
+46	  `cod_prod_type` string, 
+47	  `amt_hld` decimal(18,4), 
+48	  `amt_instal` decimal(18,4), 
+49	  `customer_type` string, 
+50	  `rat_spl_nisbah` decimal(18,4), 
+51	  `txt_hold_desc` string, 
+52	  `avg_mis` decimal(24,4), 
+53	  `avg_daily_bal` decimal(24,4), 
+54	  `cod_acct_cust_rel` string, 
+55	  `bal_acct_min_reqd` decimal(18,4))
+56	PARTITIONED BY ( 
+57	  `date_pr` string)
+58	ROW FORMAT SERDE 
+59	  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe' 
+60	WITH SERDEPROPERTIES ( 
+61	  'escape.delim'='\b', 
+62	  'field.delim'='\b', 
+63	  'serialization.format'='\b') 
+64	STORED AS INPUTFORMAT 
+65	  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat' 
+66	OUTPUTFORMAT 
+67	  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+68	LOCATION
+69	  'hdfs://DNMUAT/warehouse/tablespace/external/hive/newmisplus2_dev.db/fm_acct_casa'
+70	TBLPROPERTIES (
+71	  'STATS_GENERATED_VIA_STATS_TASK'='true', 
+72	  'bucketing_version'='2', 
+73	  'discover.partitions'='true', 
+74	  'last_modified_by'='talend', 
+75	  'last_modified_time'='1683692551', 

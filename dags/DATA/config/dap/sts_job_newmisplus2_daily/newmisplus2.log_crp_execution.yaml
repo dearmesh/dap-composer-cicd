@@ -1,0 +1,272 @@
+#GCS FOLDER CONFIGURATION
+source_gcs_folder:
+  bucket: NONE
+  folder: NONE
+process_gcs_folder:
+  bucket: NONE
+  folder: NONE
+backup_gcs_folder:
+  bucket: NONE
+  folder: NONE
+duplicate_gcs_folder:
+  bucket: NONE
+  folder: NONE
+error_gcs_folder:
+  bucket: NONE
+  folder: NONE
+archive_gcs_folder:
+  bucket: NONE
+  folder: NONE
+
+#FILE FORMAT CONFIGURATION
+file_format:
+  file_type: NONE
+  header: NONE
+  delimiter: NONE
+  file_pattern: NONE
+  count_delimiter: NONE
+  retention_file_day: NONE # 3 years
+  retention_table_day: NONE # 3 years
+
+
+#BIG QUERY CONFIGURATION
+temp_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: NONE
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    NONE
+
+main_bigquery_table:
+  server: NONE
+  project_id: NONE
+  dataset_id: NONE
+  table_name: log_crp_execution
+  last_update_date_column_source: NONE
+  last_update_date_column_target: NONE
+  transaction_date_column_target: NONE
+  transaction_date_column_source: NONE
+  table_header_dependency: NONE
+  column_header_id_dependency: NONE
+  column_line_id_dependency: NONE
+  additional_table_source: | 
+    , (select 1 from dual) ADDITIONAL
+  additional_table_target: |
+    , (select 1 limit 1) ADDITIONAL
+  additional_where_source: AND 1=1
+  additional_where_target: AND 1=1
+  schema_fields: |
+    CREATE OR REPLACE EXTERNAL TABLE v_dataset_id.log_crp_execution
+    (
+      load_timestamp timestamp
+     ,id string
+     ,class string
+     ,version numeric
+     ,parent_id string
+     ,trx_ref_no string
+     ,is_err string
+     ,err_map_cd string
+     ,err_map_nm string
+     ,executed_dt timestamp
+     ,log_dt timestamp
+     ,ch_acct_no string
+     ,ch_acct_nm string
+     ,ch_acct_ccy_cd string
+     ,ch_acct_ccy_nm string
+     ,ch_acct_cust_id string
+     ,ch_acct_cust_nm string
+     ,ch_acct_org_unit_cd string
+     ,ch_acct_org_unit_nm string
+     ,ch_acct_typ_cd string
+     ,ch_acct_typ_nm string
+     ,ch_acct_ex_rt numeric
+     ,ch_typ_1_cd string
+     ,ch_typ_1_nm string
+     ,ch_typ_1_eq_amt numeric
+     ,ch_typ_1_ex_rt numeric
+     ,ch_typ_2_cd string
+     ,ch_typ_2_nm string
+     ,ch_typ_2_eq_amt numeric
+     ,ch_typ_2_ex_rt numeric
+     ,ch_typ_3_cd string
+     ,ch_typ_3_nm string
+     ,ch_typ_3_eq_amt numeric
+     ,ch_typ_3_ex_rt numeric
+     ,ch_typ_4_cd string
+     ,ch_typ_4_nm string
+     ,ch_typ_4_eq_amt numeric
+     ,ch_typ_4_ex_rt numeric
+     ,ch_typ_5_cd string
+     ,ch_typ_5_nm string
+     ,ch_typ_5_eq_amt numeric
+     ,ch_typ_5_ex_rt numeric
+     ,actv_log_id string
+     ,debit_acct_no string
+     ,debit_acct_nm string
+     ,debit_acct_ccy_cd string
+     ,debit_acct_ccy_nm string
+     ,debit_acct_cust_id string
+     ,debit_acct_cust_nm string
+     ,debit_acct_org_unit_cd string
+     ,debit_acct_org_unit_nm string
+     ,debit_acct_typ_cd string
+     ,debit_acct_typ_nm string
+     ,debit_acct_ex_rt numeric
+     ,debit_eq_amt numeric
+     ,debit_ex_rt numeric
+     ,crdt_acct_no string
+     ,crdt_acct_nm string
+     ,crdt_acct_ccy_cd string
+     ,crdt_acct_ccy_nm string
+     ,crdt_acct_cust_id string
+     ,crdt_acct_cust_nm string
+     ,crdt_acct_org_unit_cd string
+     ,crdt_acct_org_unit_nm string
+     ,crdt_acct_typ_cd string
+     ,crdt_acct_typ_nm string
+     ,crdt_acct_ex_rt numeric
+     ,crdt_eq_amt numeric
+     ,crdt_ex_rt numeric
+     ,int_typ_cd string
+     ,int_typ_nm string
+     ,int_debit_acct_no string
+     ,int_debit_acct_nm string
+     ,int_debit_acct_ccy_cd string
+     ,int_debit_acct_ccy_nm string
+     ,int_debit_acct_cust_id string
+     ,int_debit_acct_cust_nm string
+     ,int_debit_acct_org_unit_cd string
+     ,int_debit_acct_org_unit_nm string
+     ,int_debit_acct_typ_cd string
+     ,int_debit_acct_typ_nm string
+     ,int_crdt_acct_no string
+     ,int_crdt_acct_nm string
+     ,int_crdt_acct_ccy_cd string
+     ,int_crdt_acct_ccy_nm string
+     ,int_crdt_acct_cust_id string
+     ,int_crdt_acct_cust_nm string
+     ,int_crdt_acct_org_unit_cd string
+     ,int_crdt_acct_org_unit_nm string
+     ,int_crdt_acct_typ_cd string
+     ,int_crdt_acct_typ_nm string
+     ,int_amt numeric
+     ,int_tax_amt numeric
+     ,is_bnk_tax string
+     ,cust_ref_no string
+     ,underlying_doc string
+     ,crdt_ben_bank string
+     ,crdt_ben_addr_1 string
+     ,crdt_ben_addr_2 string
+     ,crdt_ben_addr_3 string
+     ,trx_amt numeric
+     ,trx_ccy_cd string
+     ,trx_ccy_nm string
+     ,sms_status string
+     ,fax_status string
+     ,sms_no string
+     ,fax_no string
+     ,network_cd string
+     ,order_party_ref_no string
+     ,counter_party_ref_no string
+     ,remark_1 string
+     ,remark_2 string
+     ,exec_log_dtl string
+     ,log_crp_fin_actv_id string
+     ,tot_ch_eq_amt numeric
+     ,ch_acct_exc_rt numeric
+     ,ch_acct_branch_nm string
+     ,ch_acct_branch_cd string
+     ,ch_acct_alias string
+     ,log_last_upd_dt timestamp
+     ,log_created_dt timestamp
+     ,cp_ref_no string
+     ,op_ref_no string
+     ,posting_ref_no string
+     ,cp_ch_eq_amt numeric
+     ,op_ch_eq_amt numeric
+     ,ch_insruct_cd string
+     ,crdt_exc_rt numeric
+     ,crdt_acct_exc_rt numeric
+     ,crdt_acct_branch_nm string
+     ,crdt_acct_branch_cd string
+     ,debit_exc_rt numeric
+     ,debit_trx_eq_amt numeric
+     ,debit_acct_exc_rt numeric
+     ,debit_acct_branch_nm string
+     ,debit_acct_branch_cd string
+     ,int_crdt_acct_branch_cd string
+     ,int_crdt_acct_branch_nm string
+     ,int_debit_acct_branch_nm string
+     ,int_debit_acct_branch_cd string
+    )
+    WITH PARTITION COLUMNS 
+    (
+    date_pr string
+    )
+    WITH CONNECTION `v_connection`
+    OPTIONS 
+    (
+      uris = ['gs://v_bucket/*'],
+      format = 'PARQUET',
+      hive_partition_uri_prefix = 'gs://v_bucket/',
+      require_hive_partition_filter=false
+    );
+
+#QUERY CONFIGURATION
+sql_operations:
+  processing_location: NONE
+  sql_insert_temp_ext_to_temp: |
+      NONE
+  sql_check_dt_pr_exists : |
+      NONE
+  sql_insert: |
+    *
+  sql_delete: NONE
+  sql_prefix_query_table: |
+
+#SP BIGQUERY
+sp_operations:
+  sp_location: NONE
+  sp_dataset_id: NONE
+  sp_key_column: NONE
+  sp_validate_column: NONE
+  sp_validate_duplicate: NONE
+  sp_check_dependency: NONE
+  sp_validate_master_job: NONE
+  sp_datamart_name: NONE
+  sp_datamart_parameter: NONE
+  sp_check_data_retention : NONE
+  sp_data_cleansing_export : NONE
+  sp_delete_data_cleansing : NONE
+
+#STS JOB
+sts_operations:
+  sts_project_id: NONE
+  sts_job_name: NONE
+
+#AdditionalParameters
+additionalparam:
+  additionalparam1: NONE
+  additionalparam2: NONE
+  additionalparam3: NONE
+  additionalparam4: NONE
+  additionalparam5: NONE
+  additionalparam6: NONE
+  additionalparam7: NONE
+  additionalparam8: NONE
+  additionalparam9: NONE
+  additionalparam10: NONE
