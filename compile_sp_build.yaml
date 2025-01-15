@@ -39,7 +39,7 @@ steps:
             exit 0
           fi
         done
-        echo "All SP files have been run successfully.        
+        echo "All SP files have been run successfully."
 
   # # Step 2: Detect changed SP files in the Query > SP folder
   # - id: "Detect Changed Files"
