@@ -9,7 +9,7 @@ from airflow.operators.empty import EmptyOperator
 # from airflow.providers.oracle.hooks.oracle import OracleHook
 from airflow.providers.google.cloud.hooks.gcs import GCSHook
 from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
-from airflow.providers.google.cloud.transfers.oracle_to_gcs import OracleToGCSOperator
+# from airflow.providers.google.cloud.transfers.oracle_to_gcs import OracleToGCSOperator
 from airflow.providers.google.cloud.operators.bigquery import (BigQueryInsertJobOperator , BigQueryValueCheckOperator)
 from airflow.operators.python import PythonOperator
 from airflow.operators.python import BranchPythonOperator
