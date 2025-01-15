@@ -47,14 +47,14 @@ steps:
         fi
 
 
-  - id: "Debug"
-    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: bash
-    args:
-      - -c
-      - |
-        echo "Environment variables:"
-        env
+  # - id: "Debug"
+  #   name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  #   entrypoint: bash
+  #   args:
+  #     - -c
+  #     - |
+  #       echo "Environment variables:"
+  #       env
 
 options:
   logging: CLOUD_LOGGING_ONLY
