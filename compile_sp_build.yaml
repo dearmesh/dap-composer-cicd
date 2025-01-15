@@ -1,6 +1,6 @@
 steps:
   # Step 1: Clone the repository 
-  - id: "Clone"
+  - id: "Clone Repository"
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: bash
     args:
@@ -9,7 +9,9 @@ steps:
         echo "Cloning repository from GitHub..."
         git clone https://github.com/dearmesh/dap-composer-cicd.git /workspace/dap-composer-cicd
         cd /workspace/dap-composer-cicd
-        git checkout $_BRANCH_NAME 
+        echo "Checking out branch $_BRANCH_NAME"
+        git checkout $_BRANCH_NAME
+        echo "Repository cloned and branch checked out to $_BRANCH_NAME."
 
   # Step 2: Detect changed SP files in the Query > SP folder
   - id: "Detect Changed Files"
@@ -21,15 +23,14 @@ steps:
         echo "Detecting changed SQL files..."
         cd /workspace/dap-composer-cicd
         SP_FOLDER="QUERY/SP"  # Define SP_FOLDER here
-        CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | grep SP_FOLDER/.*\.sql")
-        if [ -z CHANGED_FILES ]; then
+        CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | grep "${SP_FOLDER}/.*\.sql")
+        if [ -z "${CHANGED_FILES}" ]; then
           echo "No changed SQL files detected."
           exit 0
         fi
-        echo CHANGED_FILES > /workspace/changed_files.txt
+        echo "${CHANGED_FILES}" > /workspace/changed_files.txt
         echo "Changed files:"
         cat /workspace/changed_files.txt
-
 
   # Step 3: Deploy the changed SP files to BigQuery
   - id: "Deploy SPs"
