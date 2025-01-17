@@ -33,7 +33,7 @@ steps:
           if [ -f "$$sql_file" ]; then
             sp_name=$(basename "$$sql_file" .sql) # Extract SP name
             echo "Running stored procedure: $$sp_name"
-            bq query --project_id=$PROJECT_ID --use_legacy_sql=false "CALL dataset_name.$$sp_name();"
+            bq query --project_id=$PROJECT_ID --use_legacy_sql=false "cat $$SP_FOLDER"
           else
             echo "No .sql files found in $$SP_FOLDER"
             exit 0
