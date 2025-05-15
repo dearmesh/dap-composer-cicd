@@ -15,3 +15,5 @@ with DAG('mydag', default_args=default_args, schedule_interval=None) as dag:
         task_id='updateuser'
         , bash_command='airflow users add-role -e adi.pratama@danamon.co.id -r Admin'
     )
+
+#testing
